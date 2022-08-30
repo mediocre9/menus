@@ -1,106 +1,112 @@
 #include "includes\Menu.h"
+#include <windows.h>
 #include <iostream>
+#include <thread>
 #include <memory>
 
-using std::cout;
+const int BACKGROUND = Color.WHITE_BLACK;
+const int HOVER = Color.BRIGHT_BLUE_BRIGHT_WHITE;
 
-const int BACKGROUND = Color.BRIGHT_WHITE_BLACK;
-const int FOREGROUND = Color.BRIGHT_BLUE_BRIGHT_WHITE;
+void dropDownMenu();
 
-void subMenu();
-
-void menu(){
-    system("color 07 & mode 70,30");
+int main(){
+    CursorState(10,false);
+    system("cls & color 3f & mode 60,30");
     
-    MenuItem items[] = {
-        {" File    ", FOREGROUND},  
-        {" Edit    ", BACKGROUND},  
-        {" Search  ", BACKGROUND}, 
-        {" View    ", BACKGROUND},
-    };
-    
-    std::unique_ptr<Menu> h_menu(new HorizontalMenu());
-    h_menu->setPosition(Coordinate(-10,0));
-    h_menu->setOptionItems(items);
-    h_menu->setTheme(Theme(BACKGROUND, FOREGROUND));
-    h_menu->setInputEvent(InputKeyEvent(LEFT, RIGHT));  
-    
-   while(true){
-    
-       while(!h_menu->isItemSelected()){
-           h_menu->render();
-       }
+    // window frame....
+    std::unique_ptr<Window> 
+        frame(new Frame(Dimension(20,40), Coordinate(10,5), 
+        Window::LINE, Color.WHITE_BLACK));
         
-       h_menu->setItemSelectionState(false);
-       
-       switch(h_menu->getItemPosition()){
-           case 1:
-               subMenu();
-           break;
-           
-           case 2:
-               std::cout << "2 selected";
-           break;
-           
-           case 3:
-                std::cout << "3 selected";
-           break ;
-           
-            case 4:
-                std::cout << "3 selected";
-           break ;
-       }
-       
-   }
-}
+    frame->shadow(true);
+    frame->render();
+    
+    // sub window....
+    std::unique_ptr<Window> 
+        subFrame(new Frame(Dimension(5,33), Coordinate(12,15),
+        Window::PIPE, Color.BRIGHT_WHITE_BLACK));
+        
+    subFrame->shadow(true);
+    subFrame->render();
+    
+    std::unique_ptr<Menu> h_menu(new HorizontalMenu({
+            {" File ", HOVER},
+            {" Edit ", BACKGROUND},
+            {" View ", BACKGROUND},
+            {" Help ", BACKGROUND},
+        }, 
+        Coordinate(4, 6)
+    ));
+    
+    h_menu->setTheme(Theme(BACKGROUND, HOVER));
 
-void subMenu(){
-    
-    MenuItem optItems[] = {
-        {" New      ", FOREGROUND},  
-        {" Open     ", BACKGROUND},  
-        {" Save     ", BACKGROUND}, 
-        {" Save As  ", BACKGROUND},
-    };
-    
-    std::unique_ptr<Menu> v_menu(new VerticalMenu());
-    v_menu->setTheme(Theme(BACKGROUND, FOREGROUND));
-    v_menu->setPosition(Coordinate(0,1));
-    v_menu->setOptionItems(optItems);
     
     while(true){
+        
+        while(!h_menu->isItemSelected()){
+            h_menu->render();
+        }
+        
+        h_menu->setItemSelectionState(false);
+        
+        switch(h_menu->getItemPosition()){
+            case 1:
+                dropDownMenu();
+            break;
+            
+            case 2:
+                std::cout << "Edit selected";
+            break;
+            
+            case 3:
+                std::cout << "View selected";
+            break;
+        }
+        
+    }
+    return 0;
+}
 
+
+// vertical menus........
+void dropDownMenu(){
+    std::unique_ptr<Menu> v_menu(new VerticalMenu({
+            {" New   ", HOVER},
+            {" Open  ", 0x00F0},
+            {" Save  ", 0x00F0},
+            {" Print ", 0x00F0},
+        }, 
+        Coordinate(11, 7)
+    ));
+    
+    v_menu->setTheme(Theme(0x00F0, HOVER));
+
+    
+    while(true){
+        
         while(!v_menu->isItemSelected()){
             v_menu->render();
         }
-
+        
         v_menu->setItemSelectionState(false);
-
+        
         switch(v_menu->getItemPosition()){
             case 1:
-                menu();
+                main();
             break;
-
+            
             case 2:
-                menu();
+                std::cout << "Open selected";
             break;
-
+            
             case 3:
-                menu();
+                std::cout << "Save selected";
             break;
-
+            
             case 4:
-                menu();
+                std::cout << "Print selected";
             break;
         }
     }
 }
 
-
-
-// driver code
-int main() {
-    CursorState(1,false);
-    menu();
-    return 0;
-}

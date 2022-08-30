@@ -70,7 +70,7 @@ public:
     Entity() {
         coord_.x_ = 0; 
         coord_.y_ = 0; 
-        color_ = Color.BRIGHT_BLUE_BRIGHT_WHITE;
+        color_ = Color.BLACK_WHITE;
     }
     
     void setPosition(Coordinate coord){
@@ -104,63 +104,67 @@ private:
 class Menu : public Entity{
 public:
 
-    Menu() : itemIndex_(0), itemSelected_(false), active_(false) {
+    Menu() : itemIndex_(0), isItemSelected_(false), isScrollActive_(false) {
         key_.key_one_ = UP;
         key_.key_two_ = DOWN;
         theme_.background_ = Color.WHITE_BLACK;
         theme_.marker_ = Color.BLUE_WHITE;
     }
 
-
-    void setOptionItems(const MenuItem items[]) {
-        const int SIZE = items->getCount();
-        for (int i = 0; i < SIZE ; i++) {
-            menuItem_.push_back(items[i]);
-        }
+    Menu(const std::vector<MenuItem>& items, const InputKeyEvent key, const Coordinate coord) 
+    : Menu() {
+        setItems(items);
+        setInputEvent(key);
+        setPosition(coord);
     }
 
 
-    void setOptionItem(const MenuItem& item){
+    void setItems(const std::vector<MenuItem>& items) {
+        menuItem_ = items;
+    }
+
+
+    void setItem(const MenuItem& item){
         menuItem_.push_back(item);
     }
 
-    MenuItem getOptionItem(){
-        return menuItem_.at(0);
+    MenuItem getOptionItem(int index){
+        return menuItem_.at(index);
     }
     
    void clearItemContainer(){
         menuItem_.clear();
     }
 
-    void setInputEvent(InputKeyEvent key) {
+    void setInputEvent(const InputKeyEvent key) {
         key_.key_one_ = key.key_one_;
         key_.key_two_ = key.key_two_;
     }
     
 
-    void setTheme(Theme theme){
+    void setTheme(const Theme theme){
         theme_.background_ = theme.background_;
         theme_.marker_ = theme.marker_;
     }
 
 
     void setItemSelectionState(bool itemSelected) {
-        itemSelected_ = itemSelected;
+        isItemSelected_ = itemSelected;
     }
 
 
-    void setScroll(bool active) {
-        active_ = active;
+    void scroll(bool active) {
+        isScrollActive_ = active;
     }
 
 
     bool isScrollActive() {
-        return active_;
+        return isScrollActive_;
     }
 
 
     bool isItemSelected() {
-        return itemSelected_;
+        return isItemSelected_;
     }
 
     Theme getTheme() {
@@ -184,13 +188,12 @@ public:
 
     ~Menu() {
         itemIndex_ = 0;
-        itemSelected_ = false;
+        isItemSelected_ = false;
         menuItem_.clear();
     }
 
 
     virtual void render() {}
-
 
 protected:
     
@@ -235,18 +238,18 @@ protected:
         if (itemIndex_ >= 0) {
             (menuItem_.at(itemIndex_)).setColor(getTheme().marker_);
             if (inputKey_ == ENTER) {
-                itemSelected_ = true;
+                isItemSelected_ = true;
             }
         }
     }
 
 protected:
     char inputKey_;
-    int itemIndex_; // possible memory leak operation due to raw pointers...
-    bool itemSelected_, active_;
+    int itemIndex_; 
+    bool isItemSelected_, isScrollActive_;
     InputKeyEvent key_;
     Theme theme_;
-    std::vector<MenuItem> menuItem_; // certain memory leak and index out of bound bug ...
+    std::vector<MenuItem> menuItem_; 
 };
 
 
@@ -258,15 +261,10 @@ class VerticalMenu : public Menu {
 public:
     VerticalMenu() : Menu() {}
 
-    VerticalMenu(MenuItem items[], InputKeyEvent key, Coordinate coord)
-        : Menu() {
-        setOptionItems(items);
-        setInputEvent(key);
-        setPosition(coord);
-    }
+    VerticalMenu(const std::vector<MenuItem>& items, const Coordinate coord)
+        : Menu(items, InputKeyEvent(UP, DOWN), Coordinate(coord)) {}
 
-
-    // places menu items in a verical way....
+    // places menu items in a vertical way....
     void render() override {
         const int& SCROLL_TEXTURE_VALUE = 219;
         const int& SCROLL_NONE = 0;
@@ -304,14 +302,9 @@ class HorizontalMenu : public Menu {
 
 public:
     HorizontalMenu() : Menu() {}
-
-    HorizontalMenu(MenuItem items[], InputKeyEvent key, Coordinate coord)
-        : Menu() {
-        setOptionItems(items);
-        setInputEvent(key);
-        setPosition(coord);
-    }
-
+    
+    HorizontalMenu(const std::vector<MenuItem>& items, const Coordinate coord)
+        : Menu(items, InputKeyEvent(LEFT, RIGHT), Coordinate(coord)) {}
 
     // places menu items in a horizontal way....
     void render() override {
@@ -361,13 +354,19 @@ private:
 
 
 
-
-
+// ugly code ahead not a refactored code...
 class Window : public Entity{
 public:
+    enum Border{
+        NONE,
+        PIPE,
+        LINE,
+    };
+    
     Window() : Entity() {
         dimension_.length_ = 10;
         dimension_.width_ = 10;
+        setColor(Color.WHITE_BLACK);
     }
     
     void setDimension(Dimension dim){
@@ -379,10 +378,10 @@ public:
         return dimension_;
     }
     
-    virtual void setShadow(bool active) {}
+    virtual void shadow(bool active) {}
     virtual bool isShadowEnabled() {}
     
-    virtual void setBorder(bool active) {}
+    virtual void setBorderType(Border border) {}
     virtual bool isBorderEnabled() {}
     
 private:
@@ -390,112 +389,174 @@ private:
 };
 
 
-
 class Frame : public Window{
 public:
     Frame() : Window() {
-        shadow_ = true;
-        border_ = true;
+        shadow_ = false;
+        setBorderType(Window::PIPE);
     }
     
-    Frame(Dimension dim, Coordinate coord) : Window() {
+    Frame(Dimension dim, Coordinate coord, Border border, int color) : Window() {
         setPosition(coord);
         setDimension(dim);
+        setBorderType(border);
+        setColor(color);
     }
     
-    void setShadow(bool active){
+    void shadow(bool active){
         shadow_ = active;
     }
     
-    void setBorder(bool active) {
-        border_ = active;
-    }
-    
-    bool isBorderEnabled() {
-        return border_;
+    void setBorderType(Border border) {
+        border_ = border;
     }
     
     bool isShadowEnabled() {
         return shadow_;
-    }
+    }  
     
-    void render() override {
-        
+    void render() override{
+
         if (isShadowEnabled()) {
+            // Box method from vain engine api call...
             Box backFrameBox = Box (
                                     getDimension().length_,
                                     getDimension().width_,
-                                    getCoordinate().x_ + 2,
-                                    getCoordinate().y_ + 1,
+                                    getCoordinate().x_ + 3,
+                                    getCoordinate().y_,
                                     Texture.SOLID,
                                     Texture.SOLID,
                                     Color.BLACK_BLACK
                                 );
             backFrameBox.Render();
         }
-        
-        
-        const int BORDER = (isBorderEnabled()) ? Texture.GRAIN : Texture.SOLID;
-        
+
+        switch(border_){
+            case NONE:
+                noneBorderFrameRender();
+            break;
+            
+            case PIPE:
+                pipeBorderFrame();
+            break;
+            
+            case LINE:
+                lineBorderFrame();
+            break;
+        }
+    }
+
+private:
+    void noneBorderFrameRender(){
         Box frontFrameBox = Box (
-                         getDimension().length_,
-                         getDimension().width_,
-                         getCoordinate().x_,
-                         getCoordinate().y_,
-                         BORDER,
-                         Texture.SOLID,
-                         getColor()
+                        getDimension().length_,
+                        getDimension().width_,
+                        getCoordinate().x_,
+                        getCoordinate().y_,
+                        Texture.SOLID,
+                        Texture.SOLID,
+                        getColor()
                      );
         frontFrameBox.Render();
-    } 
+    }
     
+    
+    void lineBorderFrame(){
+        const int TOP_LEFT_LINE = 218;
+        const int BOTTOM_LEFT_LINE = 192;
+    
+        const int TOP_RIGHT_LINE = 191;
+        const int BOTTOM_RIGHT_LINE = 217;
+    
+        const int HORIZONTAL_LINE = 196;
+        const int VERTICAL_LINE = 179;
+        
+        int tempY = getCoordinate().y_;
+        
+        for (int i = 0 ; i < getDimension().length_ ; i++){
+            SetPosition(getCoordinate().x_, tempY + i);
+            Paint(getColor());
+            if (i == 0){
+                std::cout << (char)TOP_LEFT_LINE;
+            } 
+            else if (i == getDimension().length_ - 1){
+                std::cout << (char)BOTTOM_LEFT_LINE;
+            }else{
+                std::cout << (char)VERTICAL_LINE;
+            }
+        
+            for (int j = 0 ; j < getDimension().width_ ; j++){
+            
+                if ((j >= 0 && j <= getDimension().width_ - 2) && (i == 0 || i == getDimension().length_ - 1))
+                    std::cout << (char)HORIZONTAL_LINE;
+            
+                else if (j == getDimension().width_ - 1 && i == 0)
+                    std::cout << (char)TOP_RIGHT_LINE;
+                
+                else if (j == getDimension().width_ - 1 && i == getDimension().length_ - 1 )
+                    std::cout << (char)BOTTOM_RIGHT_LINE;
+                
+                else if (j == getDimension().width_ - 1)
+                    std::cout << (char)VERTICAL_LINE;
+                else if (j <= getDimension().width_ - 1){
+                    Paint(getColor());
+                    std::cout << " ";
+                }
+            }
+            std::cout << "\n";
+        }
+    }
+    
+    void pipeBorderFrame(){
+        const int TOP_LEFT_PIPE = 201;
+        const int BOTTOM_LEFT_PIPE = 200;
+    
+        const int TOP_RIGHT_PIPE = 187;
+        const int BOTTOM_RIGHT_PIPE = 188;
+    
+        const int HORIZONTAL_PIPE = 205;
+        const int VERTICAL_PIPE = 186;
+        
+        int tempY = getCoordinate().y_;
+        
+        for (int i = 0 ; i < getDimension().length_ ; i++){
+            SetPosition(getCoordinate().x_, tempY + i);
+            Paint(getColor());
+            if (i == 0){
+                std::cout << (char)TOP_LEFT_PIPE;
+            } 
+            else if (i == getDimension().length_ - 1){
+                std::cout << (char)BOTTOM_LEFT_PIPE;
+            }else{
+                std::cout << (char)VERTICAL_PIPE;
+            }
+        
+            for (int j = 0 ; j < getDimension().width_ ; j++){
+            
+                if ((j >= 0 && j <= getDimension().width_ - 2) && (i == 0 || i == getDimension().length_ - 1))
+                    std::cout << (char)HORIZONTAL_PIPE;
+            
+                else if (j == getDimension().width_ - 1 && i == 0)
+                    std::cout << (char)TOP_RIGHT_PIPE;
+                
+                else if (j == getDimension().width_ - 1 && i == getDimension().length_- 1)
+                    std::cout << (char)BOTTOM_RIGHT_PIPE;
+                
+                else if (j == getDimension().width_ - 1)
+                    std::cout << (char)VERTICAL_PIPE;
+                else if (j <= getDimension().width_ - 1){
+                    Paint(getColor());
+                    std::cout << " ";
+                }
+            }
+            std::cout << "\n";
+        }
+    }
+
 private:
     Box frontFrameBox;
     Box backFrameBox;
     bool shadow_;
-    bool border_;
-};
-
-
-
-
-
-class Label : public Entity{
-public:
-    virtual void setMessage(const std::string& message) {}
-    virtual std::string getMessage () {}
-};
-
-
-
-class Text : public Label{
-public:
-    Text() {
-        message_ = "nil";
-    }
-    
-    Text(const std::string& message, Coordinate coord, int color){
-        setPosition(coord);
-        setColor(color);
-        message_ = message;
-        render();
-    }
-    
-    void setMessage(const std::string& message){
-        message_ = message;
-    }
-    
-    std::string getMessage() {
-        return message_;
-    }
-    
-    void render(){
-        SetPosition(getCoordinate().x_, getCoordinate().y_);
-        Paint(getColor());
-        std::cout << message_;
-    }
-    
-private:
-    std::string message_;
+    Border border_;
 };
 #endif
