@@ -1,7 +1,6 @@
 #include "includes\Menu.h"
 #include <windows.h>
 #include <iostream>
-#include <thread>
 #include <memory>
 
 const int BACKGROUND = Color.WHITE_BLACK;
