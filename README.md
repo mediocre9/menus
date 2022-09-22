@@ -4,6 +4,9 @@ Menus is a DOS based graphics lib that is built on vain-engine library. It can b
 ## Usage
 
 ```c++
+    const int& BACKGROUND = Color.BRIGHT_WHITE_BLACK;
+    const int& HOVER = Color.BRIGHT_BLUE_BRIGHT_WHITE;
+    
     // create an object pass vector initializer...
     std::unique_ptr<Menu> h_menu(new HorizontalMenu({
             {" File ", HOVER},
@@ -14,10 +17,17 @@ Menus is a DOS based graphics lib that is built on vain-engine library. It can b
         Coordinate(-2, 6)
     ));
     
+    // initialize theme data....
     h_menu->setTheme(Theme(BACKGROUND, HOVER));
-
+    
+    // inifinite loop to handle the input events.... 
     while(true){
         
+        // if an item is not selected, then keep rendering the object
+        // because an [ENTER] input key will always be in a waiting state
+        // for an event generation.
+        // And if any input event occurs, then the internal loop
+        // will break and will return the index...
         while(!h_menu->isItemSelected()){
             h_menu->render();
         }
@@ -37,7 +47,6 @@ Menus is a DOS based graphics lib that is built on vain-engine library. It can b
                 // event call from here...
             break;
         }
-        
     }
 ```
 
