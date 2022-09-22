@@ -36,15 +36,15 @@ Menus is a DOS based graphics lib that is built on vain-engine library. It can b
         
         switch(h_menu->getItemPosition()){
             case 1:
-                // event call from here...
+                /* Do stuff from here */
             break;
             
             case 2:
-                // event call from here...
+                /* Do stuff from here */
             break;
             
             case 3:
-                // event call from here...
+                /* Do stuff from here */
             break;
         }
     }
