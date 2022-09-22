@@ -52,16 +52,14 @@ Menus is a DOS based graphics lib that is built on vain-engine library. It can b
 
 **Same procedure for vertical (drop-down) menus.**
 ```c++
-    std::unique_ptr<Menu> v_menu(new VerticalMenu({
-            {" New   ", HOVER},
-            {" Open  ", 0x0070},
-            {" Save  ", 0x0070},
-            {" Print ", 0x0070},
-        }, 
-        Coordinate(5, 3)
-    ));
-    
-    v_menu->setTheme(Theme(0x0070, HOVER));
+    std::unique_ptr<Window> frame(new Frame(Dimension(10,30), 
+		Coordinate(3,5), 
+        Window::LINE, 
+		Color.WHITE_BLACK)
+	);
+        
+    frame->shadow(true);
+    frame->render();
 ```
 
 **Window frame class.**
