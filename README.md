@@ -64,6 +64,18 @@ Menus is a DOS based graphics lib that is built on vain-engine library. It can b
     v_menu->setTheme(Theme(0x0070, HOVER));
 ```
 
+**Window frame class.**
+```c++
+    std::unique_ptr<Window> frame(new Frame(Dimension(10,30), 
+		Coordinate(3,5), 
+        Window::LINE, 
+		Color.WHITE_BLACK)
+	);
+        
+    frame->shadow(true);
+    frame->render();
+```
+
 
 
 
