@@ -2,6 +2,7 @@
 Menus is a DOS based graphics lib that is built on vain-engine library. It can be used to create simple GUI applications. It offers various GUI components from tear-down menus to window frames etc.
 
 ## Usage
+![](previews/menus_demo.gif?raw=true "")
 
 ```c++
     const int& BACKGROUND = Color.BRIGHT_WHITE_BLACK;
@@ -64,8 +65,6 @@ Menus is a DOS based graphics lib that is built on vain-engine library. It can b
     
     v_menu->setTheme(Theme(0x0070, HOVER));
 ```
-
-![](previews/menus_demo.gif?raw=true "")
 
 **Window frame class.**
 ```c++
