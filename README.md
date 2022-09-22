@@ -5,11 +5,11 @@ Menus is a DOS based graphics lib that is built on vain-engine library. It can b
 
 ```c++
     const int& BACKGROUND = Color.BRIGHT_WHITE_BLACK;
-    const int& HOVER = Color.BRIGHT_BLUE_BRIGHT_WHITE;
+    const int& HIGHLIGHT = Color.BRIGHT_BLUE_BRIGHT_WHITE;
     
     // create an object pass vector initializer...
     std::unique_ptr<Menu> h_menu(new HorizontalMenu({
-            {" File ", HOVER},
+            {" File ", HIGHLIGHT},
             {" Edit ", BACKGROUND},
             {" View ", BACKGROUND},
             {" Help ", BACKGROUND},
