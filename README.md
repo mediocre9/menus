@@ -54,7 +54,7 @@ Menus is a DOS inspired graphics foundational class that is built upon vain-engi
 **Same procedure for vertical (drop-down) menus.**
 ```c++
     std::unique_ptr<Menu> v_menu(new VerticalMenu({
-            {" New   ", HOVER},
+            {" New   ", HIGHLIGHT},
             {" Open  ", 0x0070},
             {" Save  ", 0x0070},
             {" Print ", 0x0070},
