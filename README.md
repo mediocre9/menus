@@ -4,8 +4,8 @@ Menus is a DOS-inspired graphics foundational class that is built upon the vain-
 ## Usage
 
 ```c++
-    const int& BACKGROUND = Color.BRIGHT_WHITE_BLACK;
-    const int& HIGHLIGHT = Color.BRIGHT_BLUE_BRIGHT_WHITE;
+    const int BACKGROUND = Color.BRIGHT_WHITE_BLACK;
+    const int HIGHLIGHT = Color.BRIGHT_BLUE_BRIGHT_WHITE;
     
     // pass vector initializer list...
     std::unique_ptr<Menu> h_menu(new HorizontalMenu({
@@ -23,11 +23,11 @@ Menus is a DOS-inspired graphics foundational class that is built upon the vain-
     // infinite loop to handle the input events.... 
     while(true){
         
-        // if an item is not selected, then keep rendering the object
-        // because an [ENTER] input key will always be in a waiting state
+        // If an item is not selected, then keep rendering the object
+        // because an [ENTER] input key will always be in a waiting state 
         // for an event generation.
         // And if any input event occurs, then the internal loop
-        // will break and will return the index...
+        // will break and return the index...
         while(!h_menu->isItemSelected()){
             h_menu->render();
         }
