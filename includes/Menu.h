@@ -11,6 +11,8 @@
 #include <vector>
 using namespace eng;
 
+
+
 // option item entity....
 class MenuItem {
 public:
@@ -18,7 +20,7 @@ public:
     MenuItem() : data_("Not defined!"), color_(0) {}
 
 
-    MenuItem(std::string data, int color) : data_(data), color_(color) {
+    MenuItem(const std::string& data, const int& color) : data_(data), color_(color) {
         ++count_;
     }
 
@@ -74,8 +76,7 @@ public:
     }
     
     void setPosition(Coordinate coord){
-        coord_.x_ = coord.x_;
-        coord_.y_ = coord.y_;
+        coord_ = coord;
     }
     
     void setColor(int color){
@@ -111,7 +112,7 @@ public:
         theme_.marker_ = Color.BLUE_WHITE;
     }
 
-    Menu(const std::vector<MenuItem>& items, const InputKeyEvent key, const Coordinate coord) 
+    Menu(const std::vector<MenuItem>& items, const InputKeyEvent& key, const Coordinate& coord) 
     : Menu() {
         setItems(items);
         setInputEvent(key);
@@ -200,8 +201,7 @@ protected:
     // Input Key is the worst mechanism
     // that i have created...
     // uneccessary setInputEvent() method....
-    // and now this method.... they just dont follow the
-    // single resposibility rule....
+    // VIOLATION of single resposibility rule....
     // InputEvent class can be created to handle the input stuff...
     void waitForSelectionInputEvent() {
         inputKey_ = getch();
@@ -266,8 +266,8 @@ public:
 
     // places menu items in a vertical way....
     void render() override {
-        const int& SCROLL_TEXTURE_VALUE = 219;
-        const int& SCROLL_NONE = 0;
+        const int SCROLL_TEXTURE_VALUE = 219;
+        const int SCROLL_NONE = 0;
         
         int tempPosY = getCoordinate().y_;
 
@@ -308,8 +308,8 @@ public:
 
     // places menu items in a horizontal way....
     void render() override {
-        const int& SCROLL_TEXTURE_VALUE = 219;
-        const int& SCROLL_NONE = 0;
+        const int SCROLL_TEXTURE_VALUE = 219;
+        const int SCROLL_NONE = 0;
         
         int itemWidth = getOptionItemWidthSize();
         int tempPosX = getCoordinate().x_;
@@ -339,14 +339,17 @@ public:
 
 
 private:
-    // returns menu item width size to increment the positional
-    // coordinate for x-axis...
+    // returns [MenuItem] string width size to 
+    // increment the positional coordinate on x-plane...
     //
     // EXAMPLE: " Option " Item class object....
+    //
     // The above item width is 6 char long without whitespaces.
-    // We calculate these item widths in order 
-    // to position the next item in x-plane to avoid the
-    // overlapping of multiple rendered items....
+    // We are calculating the item width 
+    // to position the next item on x-axis to avoid 
+    // the overlapping of multiple rendered objects....
+    // InshAllah i'll try to implement [MenuItem] string padding 
+    // to equalize the object placement....
     int getOptionItemWidthSize() {
         return (menuItem_.at(0)).getData().length() + 1;
     }
@@ -354,7 +357,11 @@ private:
 
 
 
-// ugly code ahead not a refactored code...
+
+
+/*
+*  ugly code ahead... 
+*/
 class Window : public Entity{
 public:
     enum Border{
@@ -393,7 +400,6 @@ class Frame : public Window{
 public:
     Frame() : Window() {
         shadow_ = false;
-        setBorderType(Window::PIPE);
     }
     
     Frame(Dimension dim, Coordinate coord, Border border, int color) : Window() {
