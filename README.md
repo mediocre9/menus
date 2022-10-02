@@ -4,21 +4,21 @@ Menus is a DOS-inspired graphics foundational class that is built upon the vain-
 ## Usage
 
 ```c++
-    const int BACKGROUND = Color.BRIGHT_WHITE_BLACK;
+    const int DEFAULT = Color.BRIGHT_WHITE_BLACK;
     const int HIGHLIGHT = Color.BRIGHT_BLUE_BRIGHT_WHITE;
     
     // pass vector initializer list...
     std::unique_ptr<Menu> h_menu(new HorizontalMenu({
             {" File ", HIGHLIGHT},
-            {" Edit ", BACKGROUND},
-            {" View ", BACKGROUND},
-            {" Help ", BACKGROUND},
+            {" Edit ", DEFAULT},
+            {" View ", DEFAULT},
+            {" Help ", DEFAULT},
         }, 
         Coordinate(-2, 6)
     ));
     
     // initialize theme data....
-    h_menu->setTheme(Theme(BACKGROUND, HOVER));
+    h_menu->setTheme(Theme(DEFAULT, HIGHLIGHT));
     
     // infinite loop to handle the input events.... 
     while(true){
@@ -62,7 +62,7 @@ Menus is a DOS-inspired graphics foundational class that is built upon the vain-
         Coordinate(5, 3)
     ));
     
-    v_menu->setTheme(Theme(0x0070, HOVER));
+    v_menu->setTheme(Theme(0x0070, HIGHLIGHT));
 ```
 ![](previews/menus_demo.gif?raw=true "")
 
