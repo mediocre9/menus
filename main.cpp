@@ -3,43 +3,36 @@
 #include <iostream>
 #include <memory>
 
-const int BACKGROUND = Color.WHITE_BLACK;
-const int HOVER = Color.BRIGHT_BLUE_BRIGHT_WHITE;
+const int& DEFAULT = Color.WHITE_BLACK;
+const int& HIGHLIGHT = Color.BRIGHT_BLUE_BRIGHT_WHITE;
 
-void dropDownMenu();
+void tearDownMenu();
 
 int main(){
     CursorState(10,false);
-    system("cls & color 3f & mode 60,30");
+    system("title Menus (demo) & mode 40,10 & cls & color 87");
     
     // window frame....
-    std::unique_ptr<Window> 
-        frame(new Frame(Dimension(20,40), Coordinate(10,5), 
-        Window::LINE, Color.WHITE_BLACK));
-        
+    std::unique_ptr<Window> frame(new Frame(Dimension(5,20), 
+		Coordinate(8,3), 
+        Window::PIPE, 
+		Color.WHITE_BLACK)
+	);
     frame->shadow(true);
     frame->render();
-    
-    // sub window....
-    std::unique_ptr<Window> 
-        subFrame(new Frame(Dimension(5,33), Coordinate(12,15),
-        Window::PIPE, Color.BRIGHT_WHITE_BLACK));
-        
-    subFrame->shadow(true);
-    subFrame->render();
-    
-    std::unique_ptr<Menu> h_menu(new HorizontalMenu({
-            {" File ", HOVER},
-            {" Edit ", BACKGROUND},
-            {" View ", BACKGROUND},
-            {" Help ", BACKGROUND},
-        }, 
-        Coordinate(4, 6)
-    ));
-    
-    h_menu->setTheme(Theme(BACKGROUND, HOVER));
 
     
+    std::unique_ptr<Menu> h_menu(new HorizontalMenu({
+            {"  File   ", HIGHLIGHT},
+            {"  Edit   ", DEFAULT},
+            {"  View   ", DEFAULT},
+            {"  Help   ", DEFAULT},
+        }, 
+        Coordinate(-10, 0)
+    ));
+    
+    h_menu->setTheme(Theme(DEFAULT, HIGHLIGHT));
+
     while(true){
         
         while(!h_menu->isItemSelected()){
@@ -50,7 +43,7 @@ int main(){
         
         switch(h_menu->getItemPosition()){
             case 1:
-                dropDownMenu();
+                tearDownMenu();
             break;
             
             case 2:
@@ -68,17 +61,17 @@ int main(){
 
 
 // vertical menus........
-void dropDownMenu(){
+void tearDownMenu(){
     std::unique_ptr<Menu> v_menu(new VerticalMenu({
-            {" New   ", HOVER},
+            {" New   ", HIGHLIGHT},
             {" Open  ", 0x00F0},
             {" Save  ", 0x00F0},
             {" Print ", 0x00F0},
         }, 
-        Coordinate(11, 7)
+        Coordinate(0, 1)
     ));
     
-    v_menu->setTheme(Theme(0x00F0, HOVER));
+    v_menu->setTheme(Theme(0x00F0, HIGHLIGHT));
 
     
     while(true){
