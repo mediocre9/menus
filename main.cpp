@@ -3,8 +3,8 @@
 #include <iostream>
 #include <memory>
 
-const int& DEFAULT = Color.WHITE_BLACK;
-const int& HIGHLIGHT = Color.BRIGHT_BLUE_BRIGHT_WHITE;
+const int DEFAULT = Color.WHITE_BLACK;
+const int HIGHLIGHT = Color.BRIGHT_BLUE_BRIGHT_WHITE;
 
 void tearDownMenu();
 
