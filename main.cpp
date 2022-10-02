@@ -14,10 +14,10 @@ int main(){
     
     // window frame....
     std::unique_ptr<Window> frame(new Frame(Dimension(5,20), 
-		Coordinate(8,3), 
+        Coordinate(8,3), 
         Window::PIPE, 
-		Color.WHITE_BLACK)
-	);
+        Color.WHITE_BLACK)
+    );
     frame->shadow(true);
     frame->render();
 
