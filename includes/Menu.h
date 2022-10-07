@@ -1,3 +1,6 @@
+#if __cplusplus < 201103L
+    #error This project can only be compiled with a compiler that supports c++11 or above.
+#else 
 #ifndef MENU_H
 #define MENU_H
 
@@ -25,17 +28,17 @@ public:
     }
 
 
-    void setData(std::string data) {
+    void setData(const std::string& data) {
         data_ = data;
     }
 
 
-    void setColor(int color) {
+    void setColor(const int& color) {
         color_ = color;
     }
 
 
-    std::string getData() {
+    const std::string& getData() {
         return data_;
     }
 
@@ -75,11 +78,11 @@ public:
         color_ = Color.BLACK_WHITE;
     }
     
-    void setPosition(Coordinate coord){
+    void setPosition(const Coordinate& coord){
         coord_ = coord;
     }
     
-    void setColor(int color){
+    void setColor(const int& color){
         color_ = color;
     } 
     
@@ -87,7 +90,7 @@ public:
         return color_;
     }
     
-    Coordinate getCoordinate() {
+    const Coordinate& getCoordinate() {
         return coord_;
     }
     
@@ -129,7 +132,7 @@ public:
         menuItem_.push_back(item);
     }
 
-    MenuItem getOptionItem(int index){
+    const MenuItem& getOptionItem(int index) const{
         return menuItem_.at(index);
     }
     
@@ -137,24 +140,22 @@ public:
         menuItem_.clear();
     }
 
-    void setInputEvent(const InputKeyEvent key) {
-        key_.key_one_ = key.key_one_;
-        key_.key_two_ = key.key_two_;
+    void setInputEvent(const InputKeyEvent& key) {
+    	key_ = key;
     }
     
 
-    void setTheme(const Theme theme){
-        theme_.background_ = theme.background_;
-        theme_.marker_ = theme.marker_;
+    void setTheme(const Theme& theme){
+    	theme_ = theme;
     }
 
 
-    void setItemSelectionState(bool itemSelected) {
+    void setItemSelectionState(bool itemSelected)  {
         isItemSelected_ = itemSelected;
     }
 
 
-    void scroll(bool active) {
+    void scroll(bool active)  {
         isScrollActive_ = active;
     }
 
@@ -168,7 +169,7 @@ public:
         return isItemSelected_;
     }
 
-    Theme getTheme() {
+    const Theme& getTheme() {
         return theme_;
     }
 
@@ -261,7 +262,7 @@ class VerticalMenu : public Menu {
 public:
     VerticalMenu() : Menu() {}
 
-    VerticalMenu(const std::vector<MenuItem>& items, const Coordinate coord)
+    VerticalMenu(const std::vector<MenuItem>& items, const Coordinate& coord)
         : Menu(items, InputKeyEvent(UP, DOWN), Coordinate(coord)) {}
 
     // places menu items in a vertical way....
@@ -273,7 +274,7 @@ public:
 
         try {
             if (!menuItem_.empty()) {
-                for (MenuItem& i : menuItem_) {
+                for (auto& i : menuItem_) {
                     Paint(i.getColor());
                     SetPosition(getCoordinate().x_, tempPosY++);
 
@@ -303,7 +304,7 @@ class HorizontalMenu : public Menu {
 public:
     HorizontalMenu() : Menu() {}
     
-    HorizontalMenu(const std::vector<MenuItem>& items, const Coordinate coord)
+    HorizontalMenu(const std::vector<MenuItem>& items, const Coordinate& coord)
         : Menu(items, InputKeyEvent(LEFT, RIGHT), Coordinate(coord)) {}
 
     // places menu items in a horizontal way....
@@ -316,7 +317,7 @@ public:
 
         try {
             if (!menuItem_.empty()) {
-                for (MenuItem& i : menuItem_) {
+                for (auto& i : menuItem_) {
                     Paint(i.getColor());
                     SetPosition(tempPosX += itemWidth, getCoordinate().y_);
 
@@ -376,19 +377,18 @@ public:
         setColor(Color.WHITE_BLACK);
     }
     
-    void setDimension(Dimension dim){
-        dimension_.length_ = dim.length_;
-        dimension_.width_ = dim.width_;
+    void setDimension(const Dimension& dim){
+    	dimension_ = dim;
     }
     
-    Dimension getDimension(){
+    const Dimension& getDimension(){
         return dimension_;
     }
     
-    virtual void shadow(bool active) {}
+    virtual void shadow(bool active) const {}
     virtual bool isShadowEnabled() {}
     
-    virtual void setBorderType(Border border) {}
+    virtual void setBorderType(const Border& border) {}
     virtual bool isBorderEnabled() {}
     
 private:
@@ -402,14 +402,14 @@ public:
         shadow_ = false;
     }
     
-    Frame(Dimension dim, Coordinate coord, Border border, int color) : Window() {
+    Frame(const Dimension& dim, const Coordinate& coord, const Border& border, const int& color) : Window() {
         setPosition(coord);
         setDimension(dim);
         setBorderType(border);
         setColor(color);
     }
     
-    void shadow(bool active){
+    void shadow(bool active) {
         shadow_ = active;
     }
     
@@ -425,7 +425,7 @@ public:
 
         if (isShadowEnabled()) {
             // Box method from vain engine api call...
-            Box backFrameBox = Box (
+            Box backFrameBox_ = Box (
                                     getDimension().length_,
                                     getDimension().width_,
                                     getCoordinate().x_ + 3,
@@ -434,7 +434,7 @@ public:
                                     Texture.SOLID,
                                     Color.BLACK_BLACK
                                 );
-            backFrameBox.Render();
+            backFrameBox_.Render();
         }
 
         switch(border_){
@@ -454,7 +454,7 @@ public:
 
 private:
     void noneBorderFrameRender(){
-        Box frontFrameBox = Box (
+        Box frontFrameBox_ = Box (
                         getDimension().length_,
                         getDimension().width_,
                         getCoordinate().x_,
@@ -463,7 +463,7 @@ private:
                         Texture.SOLID,
                         getColor()
                      );
-        frontFrameBox.Render();
+        frontFrameBox_.Render();
     }
     
     
@@ -560,9 +560,10 @@ private:
     }
 
 private:
-    Box frontFrameBox;
-    Box backFrameBox;
-    bool shadow_;
+    Box frontFrameBox__;
+    Box backFrameBox_;
     Border border_;
+    bool shadow_;
 };
+#endif
 #endif
