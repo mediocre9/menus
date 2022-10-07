@@ -14,7 +14,7 @@ Menus is a DOS-inspired graphics foundational class that is built upon the vain-
             {" View ", DEFAULT},
             {" Help ", DEFAULT},
         }, 
-        Coordinate(-2, 6)
+        Coordinate(0, -1)
     ));
     
     // initialize theme data....
@@ -59,7 +59,7 @@ Menus is a DOS-inspired graphics foundational class that is built upon the vain-
             {" Save  ", 0x0070},
             {" Print ", 0x0070},
         }, 
-        Coordinate(5, 3)
+        Coordinate(0, 0)
     ));
     
     v_menu->setTheme(Theme(0x0070, HIGHLIGHT));
