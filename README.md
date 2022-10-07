@@ -55,14 +55,15 @@ Menus is a DOS-inspired graphics foundational class that is built upon the vain-
 ```c++
     std::unique_ptr<Menu> v_menu(new VerticalMenu({
             {" New   ", HIGHLIGHT},
-            {" Open  ", 0x0070},
-            {" Save  ", 0x0070},
-            {" Print ", 0x0070},
+            {" Open  ", DEFAULT},
+            {" Save  ", DEFAULT},
+            {" Print ", DEFAULT},
         }, 
         Coordinate(0, 0)
     ));
     
-    v_menu->setTheme(Theme(0x0070, HIGHLIGHT));
+    v_menu->setTheme(Theme(DEFAULT, HIGHLIGHT));
+
 ```
 ![](previews/menus_demo.gif?raw=true "")
 
