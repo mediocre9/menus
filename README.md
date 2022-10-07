@@ -49,6 +49,7 @@ Menus is a DOS-inspired graphics foundational class that is built upon the vain-
         }
     }
 ```
+
 ![](previews/menu.png?raw=true "")
 
 **Same procedure for vertical (drop-down) menus.**
