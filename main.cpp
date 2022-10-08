@@ -1,6 +1,4 @@
 #include "includes\Menu.h"
-#include <windows.h>
-#include <iostream>
 #include <memory>
 
 const int DEFAULT = Color.WHITE_BLACK;
@@ -47,11 +45,15 @@ int main(){
             break;
             
             case 2:
-                std::cout << "Edit selected";
+            	 /* Do stuff from here */
             break;
             
             case 3:
-                std::cout << "View selected";
+            	 /* Do stuff from here */
+            break;
+            
+            case 4:
+            	 /* Do stuff from here */
             break;
         }
         
@@ -66,7 +68,7 @@ void tearDownMenu(){
             {" New   ", HIGHLIGHT},
             {" Open  ", 0x00F0},
             {" Save  ", 0x00F0},
-            {" Print ", 0x00F0},
+            {" Close ", 0x00F0},
         }, 
         Coordinate(0, 1)
     ));
@@ -84,21 +86,20 @@ void tearDownMenu(){
         
         switch(v_menu->getItemPosition()){
             case 1:
-                main();
+                
             break;
             
             case 2:
-                std::cout << "Open selected";
+            	 /* Do stuff from here */
             break;
             
             case 3:
-                std::cout << "Save selected";
+            	 /* Do stuff from here */
             break;
             
             case 4:
-                std::cout << "Print selected";
+            	main();
             break;
         }
     }
 }
-
