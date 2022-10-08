@@ -197,8 +197,8 @@ public:
 
     virtual void render() {}
 
+
 protected:
-    
     // Input Key is the worst mechanism
     // that i have created...
     // uneccessary setInputEvent() method....
@@ -243,14 +243,17 @@ protected:
             }
         }
     }
-
+    
 protected:
+	std::vector<MenuItem> menuItem_; 
+
+private:
     char inputKey_;
     int itemIndex_; 
-    bool isItemSelected_, isScrollActive_;
+    bool isItemSelected_;
+	bool isScrollActive_;
     InputKeyEvent key_;
     Theme theme_;
-    std::vector<MenuItem> menuItem_; 
 };
 
 
@@ -424,7 +427,7 @@ public:
     void render() override{
 
         if (isShadowEnabled()) {
-            // Box method from vain engine lib api call...
+            // Box method from vain engine api call...
             Box backFrameBox_ = Box (
                                     getDimension().length_,
                                     getDimension().width_,
