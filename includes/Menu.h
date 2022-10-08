@@ -141,12 +141,12 @@ public:
     }
 
     void setInputEvent(const InputKeyEvent& key) {
-    	key_ = key;
+        key_ = key;
     }
     
 
     void setTheme(const Theme& theme){
-    	theme_ = theme;
+        theme_ = theme;
     }
 
 
@@ -245,13 +245,13 @@ protected:
     }
     
 protected:
-	std::vector<MenuItem> menuItem_; 
+    std::vector<MenuItem> menuItem_; 
 
 private:
     char inputKey_;
     int itemIndex_; 
     bool isItemSelected_;
-	bool isScrollActive_;
+    bool isScrollActive_;
     InputKeyEvent key_;
     Theme theme_;
 };
@@ -381,7 +381,7 @@ public:
     }
     
     void setDimension(const Dimension& dim){
-    	dimension_ = dim;
+        dimension_ = dim;
     }
     
     const Dimension& getDimension(){
