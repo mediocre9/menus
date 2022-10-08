@@ -7,15 +7,16 @@ const int HIGHLIGHT = Color.BRIGHT_BLUE_BRIGHT_WHITE;
 void tearDownMenu();
 
 int main(){
-    CursorState(1,false);
+    CursorState(10,false);
     system("title Menus (demo) & mode 40,10 & cls & color 87");
     
     // window frame....
-    std::unique_ptr<Window> frame(new Frame(Dimension(5,27), 
-        Coordinate(5,3), 
+    std::unique_ptr<Window> frame(new Frame(Dimension(6,27), 
+        Coordinate(5,2), 
         Window::PIPE, 
         Color.WHITE_BLACK)
     );
+    frame->setColor(0x00CE);
     frame->setShadow(true);
     frame->render();
 
@@ -65,10 +66,10 @@ int main(){
 // vertical menus........
 void tearDownMenu(){
     std::unique_ptr<Menu> v_menu(new VerticalMenu({
-            {" New   ", HIGHLIGHT},
-            {" Open  ", 0x00F0},
-            {" Save  ", 0x00F0},
-            {" Close ", 0x00F0},
+            {"  New    ", HIGHLIGHT},
+            {"  Open   ", 0x00F0},
+            {"  Save   ", 0x00F0},
+            {"  Back   ", 0x00F0},
         }, 
         Coordinate(0, 1)
     ));
