@@ -7,7 +7,7 @@ const int HIGHLIGHT = Color.BRIGHT_BLUE_BRIGHT_WHITE;
 void tearDownMenu();
 
 int main(){
-    CursorState(10,false);
+    CursorState(1,false);
     system("title Menus (demo) & mode 40,10 & cls & color 87");
     
     // window frame....
