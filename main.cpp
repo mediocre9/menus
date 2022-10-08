@@ -13,12 +13,12 @@ int main(){
     system("title Menus (demo) & mode 40,10 & cls & color 87");
     
     // window frame....
-    std::unique_ptr<Window> frame(new Frame(Dimension(5,20), 
-        Coordinate(8,3), 
+    std::unique_ptr<Window> frame(new Frame(Dimension(5,27), 
+        Coordinate(5,3), 
         Window::PIPE, 
         Color.WHITE_BLACK)
     );
-    frame->shadow(true);
+    frame->setShadow(true);
     frame->render();
 
     

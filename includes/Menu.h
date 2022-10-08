@@ -202,7 +202,7 @@ protected:
     // Input Key is the worst mechanism
     // that i have created...
     // uneccessary setInputEvent() method....
-    // VIOLATION of single resposibility rule....
+    // VIOLATION: of single resposibility rule....
     // InputEvent class can be created to handle the input stuff...
     void waitForSelectionInputEvent() {
         inputKey_ = getch();
@@ -385,7 +385,7 @@ public:
         return dimension_;
     }
     
-    virtual void shadow(bool active) const {}
+    virtual void setShadow(const bool& active) {}
     virtual bool isShadowEnabled() {}
     
     virtual void setBorderType(const Border& border) {}
@@ -409,11 +409,11 @@ public:
         setColor(color);
     }
     
-    void shadow(bool active) {
+    void setShadow(const bool& active) {
         shadow_ = active;
     }
     
-    void setBorderType(Border border) {
+    void setBorderType(const Border& border) {
         border_ = border;
     }
     
