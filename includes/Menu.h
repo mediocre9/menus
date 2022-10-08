@@ -150,8 +150,8 @@ public:
     }
 
 
-    void setItemSelectionState(bool itemSelected)  {
-        isItemSelected_ = itemSelected;
+    void setItemSelectionState(bool state)  {
+        isItemSelected_ = state;
     }
 
 
