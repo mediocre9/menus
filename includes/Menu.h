@@ -424,7 +424,7 @@ public:
     void render() override{
 
         if (isShadowEnabled()) {
-            // Box method from vain engine api call...
+            // Box method from vain engine lib api call...
             Box backFrameBox_ = Box (
                                     getDimension().length_,
                                     getDimension().width_,
