@@ -112,7 +112,7 @@ public:
         key_.key_one_ = UP;
         key_.key_two_ = DOWN;
         theme_.background_ = Color.WHITE_BLACK;
-        theme_.marker_ = Color.BLUE_WHITE;
+        theme_.highlight_ = Color.BLUE_WHITE;
     }
 
     Menu(const std::vector<MenuItem>& items, const InputKeyEvent& key, const Coordinate& coord) 
@@ -237,7 +237,7 @@ protected:
     void waitForEnterInput() {
         const char ENTER = '\r';
         if (itemIndex_ >= 0) {
-            (menuItem_.at(itemIndex_)).setColor(getTheme().marker_);
+            (menuItem_.at(itemIndex_)).setColor(getTheme().highlight_);
             if (inputKey_ == ENTER) {
                 isItemSelected_ = true;
             }
