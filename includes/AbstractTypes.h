@@ -45,13 +45,13 @@ struct Coordinate {
 struct Theme {
     Theme() {}
 
-    Theme(int background, int marker) {
+    Theme(int background, int highlight) {
         background_ = background;
-        marker_ = marker;
+        highlight_ = highlight;
     }
 
     int background_;
-    int marker_;
+    int highlight_;
 };
 
 
