@@ -12,7 +12,7 @@
 #include <iostream>
 #include <conio.h>
 #include <vector>
-using namespace eng;
+//using namespace eng;
 
 
 
@@ -75,7 +75,7 @@ public:
     Entity() {
         coord_.x_ = 0; 
         coord_.y_ = 0; 
-        color_ = Color.BLACK_WHITE;
+        color_ = eng::Color.BLACK_WHITE;
     }
     
     void setPosition(const Coordinate& coord){
@@ -111,8 +111,8 @@ public:
     Menu() : itemIndex_(0), isItemSelected_(false), isScrollActive_(false) {
         key_.key_one_ = UP;
         key_.key_two_ = DOWN;
-        theme_.background_ = Color.WHITE_BLACK;
-        theme_.highlight_ = Color.BLUE_WHITE;
+        theme_.background_ = eng::Color.WHITE_BLACK;
+        theme_.highlight_ = eng::Color.BLUE_WHITE;
     }
 
     Menu(const std::vector<MenuItem>& items, const InputKeyEvent& key, const Coordinate& coord) 
@@ -195,9 +195,6 @@ public:
     }
 
 
-    virtual void render() {}
-
-
 protected:
     // Input Key is the worst mechanism
     // that i have created...
@@ -278,14 +275,15 @@ public:
         try {
             if (!menuItem_.empty()) {
                 for (auto& i : menuItem_) {
-                    Paint(i.getColor());
-                    SetPosition(getCoordinate().x_, tempPosY++);
+                    
+                    eng::Paint(i.getColor());
+                    eng::SetPosition(getCoordinate().x_, tempPosY++);
 
                     char texture = (isScrollActive()) ? SCROLL_TEXTURE_VALUE : SCROLL_NONE;
                     std::cout << texture << i.getData() ;
                 }
             } else {
-                throw "\nVector container is empty. Initialize item objects.";
+                throw "\nVector container is empty. Initialize MenuItem objects.";
             }
         } catch (const char* e) {
             std::cerr << e;
@@ -321,18 +319,18 @@ public:
         try {
             if (!menuItem_.empty()) {
                 for (auto& i : menuItem_) {
-                    Paint(i.getColor());
-                    SetPosition(tempPosX += itemWidth, getCoordinate().y_);
+                    
+                    eng::Paint(i.getColor());
+                    eng::SetPosition(tempPosX += itemWidth, getCoordinate().y_);
 
                     char texture = (isScrollActive()) ? SCROLL_TEXTURE_VALUE : SCROLL_NONE;
                     std::cout << texture << i.getData();
                 }
             } else {
-                throw "\nVector container is empty. Initialize item objects.";
+                throw "\nVector container is empty. Initialize MenuItem objects.";
             }
         } catch (const char* e) {
             std::cerr << e;
-            std::cin.get();
             exit(0);
         }
 
@@ -377,7 +375,7 @@ public:
     Window() : Entity() {
         dimension_.length_ = 10;
         dimension_.width_ = 10;
-        setColor(Color.WHITE_BLACK);
+        setColor(eng::Color.WHITE_BLACK);
     }
     
     void setDimension(const Dimension& dim){
@@ -428,14 +426,14 @@ public:
 
         if (isShadowEnabled()) {
             // Box method from vain engine api call...
-            Box backFrameBox_ = Box (
+            eng::Box backFrameBox_ = eng::Box (
                                     getDimension().length_,
                                     getDimension().width_,
                                     getCoordinate().x_ + 3,
                                     getCoordinate().y_,
-                                    Texture.SOLID,
-                                    Texture.SOLID,
-                                    Color.BLACK_BLACK
+                                    eng::Texture.SOLID,
+                                    eng::Texture.SOLID,
+                                    eng::Color.BLACK_BLACK
                                 );
             backFrameBox_.Render();
         }
@@ -457,13 +455,13 @@ public:
 
 private:
     void noneBorderFrameRender(){
-        Box frontFrameBox_ = Box (
+        eng::Box frontFrameBox_ = eng::Box (
                         getDimension().length_,
                         getDimension().width_,
                         getCoordinate().x_,
                         getCoordinate().y_,
-                        Texture.SOLID,
-                        Texture.SOLID,
+                        eng::Texture.SOLID,
+                        eng::Texture.SOLID,
                         getColor()
                      );
         frontFrameBox_.Render();
@@ -483,8 +481,8 @@ private:
         int tempY = getCoordinate().y_;
         
         for (int i = 0 ; i < getDimension().length_ ; i++){
-            SetPosition(getCoordinate().x_, tempY + i);
-            Paint(getColor());
+            eng::SetPosition(getCoordinate().x_, tempY + i);
+            eng::Paint(getColor());
             if (i == 0){
                 std::cout << (char)TOP_LEFT_LINE;
             } 
@@ -508,7 +506,7 @@ private:
                 else if (j == getDimension().width_ - 1)
                     std::cout << (char)VERTICAL_LINE;
                 else if (j <= getDimension().width_ - 1){
-                    Paint(getColor());
+                    eng::Paint(getColor());
                     std::cout << " ";
                 }
             }
@@ -529,8 +527,8 @@ private:
         int tempY = getCoordinate().y_;
         
         for (int i = 0 ; i < getDimension().length_ ; i++){
-            SetPosition(getCoordinate().x_, tempY + i);
-            Paint(getColor());
+            eng::SetPosition(getCoordinate().x_, tempY + i);
+            eng::Paint(getColor());
             if (i == 0){
                 std::cout << (char)TOP_LEFT_PIPE;
             } 
@@ -554,7 +552,7 @@ private:
                 else if (j == getDimension().width_ - 1)
                     std::cout << (char)VERTICAL_PIPE;
                 else if (j <= getDimension().width_ - 1){
-                    Paint(getColor());
+                    eng::Paint(getColor());
                     std::cout << " ";
                 }
             }
@@ -563,8 +561,8 @@ private:
     }
 
 private:
-    Box frontFrameBox__;
-    Box backFrameBox_;
+    eng::Box frontFrameBox__;
+    eng::Box backFrameBox_;
     Border border_;
     bool shadow_;
 };
