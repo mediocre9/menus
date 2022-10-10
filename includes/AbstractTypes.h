@@ -1,7 +1,6 @@
 #ifndef ABSTRACT_TYPES_H
 #define ABSTRACT_TYPES_H
 
-
 // General Dimension class for widgets/console window...
 struct Dimension {
     Dimension() {}
@@ -41,7 +40,6 @@ struct Coordinate {
     int x_;
     int y_;
 };
-
 
 // MenuOption selection theme...
 struct Theme {
