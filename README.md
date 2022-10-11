@@ -81,7 +81,7 @@ To use the `Vain-Engine` library use `eng` namespace for it.
         Color.WHITE_BLACK)
     );
         
-    frame->shadow(true);
+    frame->setShadow(true);
     frame->render();
 ```
 
