@@ -12,6 +12,9 @@
 #include <iostream>
 #include <conio.h>
 #include <vector>
+//using namespace eng;
+
+
 
 // option item entity....
 class MenuItem {
@@ -147,8 +150,8 @@ public:
     }
 
 
-    void setItemSelectionState(bool state)  {
-        isItemSelected_ = state;
+    void restart()  {
+        isItemSelected_ = false;
     }
 
 
@@ -164,6 +167,10 @@ public:
 
     bool isItemSelected() {
         return isItemSelected_;
+    }
+    
+    bool isItemNotSelected() {
+        return !isItemSelected_;
     }
 
     const Theme& getTheme() {
