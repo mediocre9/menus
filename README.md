@@ -37,7 +37,7 @@ To use the `Vain-Engine` library use `eng` namespace for it.
             h_menu->render();
         }
         
-        h_menu->setItemSelectionState(false);
+        h_menu->restart();
         
         switch(h_menu->getItemPosition()){
             case 1:
