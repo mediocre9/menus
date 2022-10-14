@@ -14,7 +14,6 @@ int main(){
     // window frame....
     std::unique_ptr<Window> frame(new Frame(Dimension(6,27), 
         Coordinate(5,2), 
-        Window::LINE, 
         eng::Color.WHITE_BLACK)
     );
     frame->setColor(0x001E);
