@@ -77,7 +77,6 @@ Use the namespace `eng` for the 'Vain-Engine' library functions.
 ```c++
     std::unique_ptr<Window> frame(new Frame(Dimension(10,30), 
         Coordinate(3,5), 
-        Window::LINE, 
         Color.WHITE_BLACK)
     );
         
