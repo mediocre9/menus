@@ -202,7 +202,7 @@ protected:
     // that i have created...
     // uneccessary setInputEvent() method....
     // VIOLATION: of single resposibility rule....
-    // InputEvent class can be created to handle the input stuff...
+    // InputEvent class can be created to handle the input event...
     void waitForSelectionInputEvent() {
         inputKey_ = getch();
 
@@ -375,41 +375,19 @@ public:
     };
     
     Window() : Entity() {
+        shadow_ = false;
+        border_ = LINE;
         dimension_.length_ = 10;
         dimension_.width_ = 10;
         setColor(eng::Color.WHITE_BLACK);
     }
     
-    void setDimension(const Dimension& dim){
+    void setDimension(const Dimension& dim) {
         dimension_ = dim;
     }
     
     const Dimension& getDimension(){
         return dimension_;
-    }
-    
-    virtual void setShadow(const bool& active) {}
-    virtual bool isShadowEnabled() {}
-    
-    virtual void setBorderType(const Border& border) {}
-    virtual bool isBorderEnabled() {}
-    
-private:
-    Dimension dimension_;
-};
-
-
-class Frame : public Window{
-public:
-    Frame() : Window() {
-        shadow_ = false;
-    }
-    
-    Frame(const Dimension& dim, const Coordinate& coord, const Border& border, const int& color) : Window() {
-        setPosition(coord);
-        setDimension(dim);
-        setBorderType(border);
-        setColor(color);
     }
     
     void setShadow(const bool& active) {
@@ -420,15 +398,36 @@ public:
         border_ = border;
     }
     
+    const Border& getBorderType() {
+        return border_;
+    }
+    
     bool isShadowEnabled() {
         return shadow_;
     }  
     
+    
+private:
+    bool shadow_;
+    Border border_;
+    Dimension dimension_;
+};
+
+
+class Frame : public Window{
+public:
+    Frame() : Window() {}
+    
+    Frame(const Dimension& dim, const Coordinate& coord, const int& color) : Window() {
+        setPosition(coord);
+        setDimension(dim);
+        setColor(color);
+    }
+    
     void render() override{
 
         if (isShadowEnabled()) {
-            // Box method from vain engine api call...
-            eng::Box backFrameBox_ = eng::Box (
+            backFrameBox_ = eng::Box (
                                     getDimension().length_,
                                     getDimension().width_,
                                     getCoordinate().x_ + 3,
@@ -440,9 +439,9 @@ public:
             backFrameBox_.Render();
         }
 
-        switch(border_){
+        switch(getBorderType()){
             case NONE:
-                noneBorderFrameRender();
+                noneBorderFrame();
             break;
             
             case PIPE:
@@ -456,8 +455,8 @@ public:
     }
 
 private:
-    void noneBorderFrameRender(){
-        eng::Box frontFrameBox_ = eng::Box (
+    void noneBorderFrame(){
+        frontFrameBox_ = eng::Box (
                         getDimension().length_,
                         getDimension().width_,
                         getCoordinate().x_,
@@ -563,10 +562,8 @@ private:
     }
 
 private:
-    eng::Box frontFrameBox__;
+    eng::Box frontFrameBox_;
     eng::Box backFrameBox_;
-    Border border_;
-    bool shadow_;
 };
 #endif
 #endif
