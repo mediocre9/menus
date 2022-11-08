@@ -76,8 +76,7 @@ Use the namespace `eng` for the 'Vain-Engine' library functions.
 **Window frame class.**
 ```c++
     std::unique_ptr<Window> frame(new Frame(Dimension(10,30), 
-        Coordinate(3,5), 
-        Color.WHITE_BLACK)
+        Coordinate(3,5))
     );
         
     frame->setShadow(true);
