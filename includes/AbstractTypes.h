@@ -1,18 +1,19 @@
 #ifndef ABSTRACT_TYPES_H
 #define ABSTRACT_TYPES_H
 
-// General Dimension class for widgets/console window....
+// General Dimension class for widgets...
 struct Dimension {
+    
     Dimension() {}
 
     Dimension(int length, int width) {
         this->length_ = length;
-        this->width_ = width;
+        this->width_  = width;
     }
 
     Dimension(const Dimension& dim) {
         this->length_ = dim.length_;
-        this->width_ = dim.width_;
+        this->width_  = dim.width_;
     }
 
     int length_;
@@ -43,11 +44,12 @@ struct Coordinate {
 
 // MenuOption selection theme...
 struct Theme {
+    
     Theme() {}
 
     Theme(int background, int highlight) {
         background_ = background;
-        highlight_ = highlight;
+        highlight_  = highlight;
     }
 
     int background_;
@@ -55,17 +57,24 @@ struct Theme {
 };
 
 
-enum INPUT_KEYS { UP = 72, LEFT = 75, RIGHT = 77, DOWN = 80 };
+enum Keys { 
+    UP    = 72,  // ascii code for up-arrow key
+    LEFT  = 75,  // ascii code for left-arrow key
+    RIGHT = 77,  // ascii code for right-arrow key
+    DOWN  = 80   // ascii code for down-arrow key
+};
 
-struct InputKeyEvent {
-    InputKeyEvent() {}
 
-    InputKeyEvent(INPUT_KEYS key_one, INPUT_KEYS key_two) {
+struct InputKey {
+    
+    InputKey() {}
+
+    InputKey(Keys key_one, Keys key_two) {
         this->key_one_ = key_one;
         this->key_two_ = key_two;
     }
 
-    INPUT_KEYS key_one_, key_two_;
+    Keys key_one_, key_two_;
 };
 
 #endif
