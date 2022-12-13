@@ -654,5 +654,86 @@ private:
     eng::Box frontFrameBox_;
     eng::Box backFrameBox_;
 };
+
+
+class Text : public Entity{
+public:
+	
+    enum TextStyle {
+    	NORMAL,
+        SINGLE,
+        DOUBLE,
+        DOTTED,
+    };
+    
+    Text() : Entity() {
+        setPosition(Coordinate(0, 0));
+        style_ = Text::NORMAL;
+        setColor(0x0070);
+    }
+    
+    Text(const std::string& text, Coordinate coord, TextStyle style = Text::NORMAL, int color = 0x0070) : Entity() {
+        setText(text);
+        setPosition(coord);
+        setColor(color);
+        setStyle(style);
+        render();
+    }
+
+    
+    void setStyle(TextStyle style) {
+        style_ = style;
+    }
+        
+    void setText(const std::string& text) {
+        this->text_ = text;
+    }
+    
+    std::string& getText()  {
+        return text_;
+    }
+    
+    void render() override {
+        eng::Paint(getColor());
+        eng::SetPosition(getCoordinate().x_, getCoordinate().y_);
+        
+        switch(style_) {
+            case Text::NORMAL:
+            std::cout << text_;
+            break;
+            
+            case Text::SINGLE:{
+                std::cout << getText();
+                eng::SetPosition(getCoordinate().x_, getCoordinate().y_ + 1);
+                for (auto& i : getText()) {
+                    std::cout << char(196);
+                }
+                break;
+            }
+            
+            case Text::DOUBLE: {
+                std::cout << getText();
+                eng::SetPosition(getCoordinate().x_, getCoordinate().y_ + 1);
+                for (auto& i : getText()) {
+                    std::cout << char(205);
+                }
+                break;
+            }
+            
+            case Text::DOTTED: {
+                std::cout << getText();
+                eng::SetPosition(getCoordinate().x_, getCoordinate().y_ + 1);
+                for (auto& i : getText()) {
+                    std::cout << char(249);
+                }
+                break;
+            }
+        }
+    }
+    
+private:
+    std::string text_;
+    TextStyle style_;
+};
 #endif
 #endif
