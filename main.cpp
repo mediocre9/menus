@@ -7,7 +7,7 @@ const int HIGHLIGHT = eng::Color.BRIGHT_BLUE_BRIGHT_WHITE;
 void tearDownMenu();
 void subTearDownMenu();
 
-int main(){
+int main() {
     
     eng::CursorState(10,false);
     system("title Menus (demo) & mode 60,27 & cls & color 87");
@@ -17,9 +17,13 @@ int main(){
     std::unique_ptr<Window> frame(new Frame(Dimension(20,48), 
         Coordinate(5,4))
     );
-    frame->setBorderType(Window::PIPE);
+    frame->setBorderType(Window::LINE);
     frame->setShadow(true);
     frame->render();
+    
+    
+    // Text widget . . . 
+    Text("Main Window", Coordinate(25,5), Text::DOUBLE);
     
     std::unique_ptr<Menu> h_menu(new HorizontalMenu({
             {"  File   ", HIGHLIGHT},
@@ -131,7 +135,7 @@ void subTearDownMenu() {
     
     v_menu->setTheme(Theme(DEFAULT, HIGHLIGHT));
     
-    while(true){
+    for(;;) {
         
         while(v_menu->isItemNotSelected()){
             v_menu->render();
