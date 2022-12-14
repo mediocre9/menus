@@ -1,15 +1,14 @@
 # directories
-# lib/
-# includes/
+lib/
 
 # src files
 *.o
 *.exe
 
 # project files
-# Makefile.win
-# Menus.dev
-# Menus.layout
+Makefile.win
+Menus.dev
+Menus.layout
 
 # libraries
-# "Vain Engine".dll
+"Vain Engine".dll
