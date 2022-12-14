@@ -1,6 +1,5 @@
 #include "includes\Menu.h"
 #include <memory>
-#include <thread>
 
 const int DEFAULT   = eng::Color.BRIGHT_WHITE_BLACK;
 const int HIGHLIGHT = eng::Color.BRIGHT_BLUE_BRIGHT_WHITE;
