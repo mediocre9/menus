@@ -20,6 +20,6 @@ echo "Launching $APP_NAME . . .  "
 start "$APP_NAME".exe
 
 echo "exiting . . ."
-sleep 1
+sleep 2
 
 
