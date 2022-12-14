@@ -1,32 +1,47 @@
 #include "includes\Menu.h"
 #include <memory>
+#include <thread>
 
 const int DEFAULT   = eng::Color.BRIGHT_WHITE_BLACK;
 const int HIGHLIGHT = eng::Color.BRIGHT_BLUE_BRIGHT_WHITE;
 
 void tearDownMenu();
 void subTearDownMenu();
+void createNewWindow();
 
-int main(){
+int main() {
     
     eng::CursorState(10,false);
-    system("title Menus (demo) & mode 60,27 & cls & color 87");
+    system("title Menus (demo) & mode 100,27 & cls & color 87");
     
     
     // window frame....
     std::unique_ptr<Window> frame(new Frame(Dimension(20,48), 
         Coordinate(5,4))
     );
-    frame->setBorderType(Window::PIPE);
+    frame->setBorderType(Window::LINE);
     frame->setShadow(true);
     frame->render();
+
+
+    // Text widget . . . 
+    Text("I am a normal text", Coordinate(16,9), Text::NORMAL);
+    Text("I am an underlined text", Coordinate(16,11), Text::SINGLE, eng::Color.WHITE_RED);
+    Text("I am a double underlined text", Coordinate(16,13), Text::DOUBLE, eng::Color.WHITE_BLUE);
+    Text("I am a dotted underlined text", Coordinate(16,15), Text::DOTTED, eng::Color.WHITE_GREEN);
     
+
+    // Menus . . .
     std::unique_ptr<Menu> h_menu(new HorizontalMenu({
-            {"  File   ", HIGHLIGHT},
+            {"  New    ", HIGHLIGHT},
+            {"  File   ", DEFAULT},
             {"  Edit   ", DEFAULT},
             {"  View   ", DEFAULT},
+            {"  Find   ", DEFAULT},
             {"  Tools  ", DEFAULT},
+            {"  Goto   ", DEFAULT},
             {"  Search ", DEFAULT},
+            {" Project ", DEFAULT},
             {"  Help   ", DEFAULT},
         }, 
         Coordinate(-10, 0)
@@ -50,20 +65,19 @@ int main(){
             break;
             
             case 2:
-            	/* Do stuff from here */
+                /* Do stuff from here */
             break;
             
             case 3:
-            	/* Do stuff from here */
+                /* Do stuff from here */
             break;
             
             case 4:
-            	/* Do stuff from here */
+                /* Do stuff from here */
             break;
         }
         
     }
-    
     
     return 0;
 }
@@ -76,7 +90,7 @@ void tearDownMenu() {
             {"  Open     ", DEFAULT},
             {"  Save     ", DEFAULT},
             {"  Print    ", DEFAULT},
-            {"  Export > ", DEFAULT},
+            {"  Window > ", DEFAULT},
             {"  Close    ", DEFAULT},
         }, 
         Coordinate(0, 1)
@@ -99,19 +113,19 @@ void tearDownMenu() {
             break;
             
             case 2:
-            	/* Do stuff from here */
+                /* Do stuff from here */
             break;
             
             case 3:
-            	/* Do stuff from here */
+                /* Do stuff from here */
             break;
             
             case 5:
-            	subTearDownMenu();
+                subTearDownMenu();
             break;
             
             case 6:
-            	main();
+                main();
             break;
         }
     }
@@ -120,7 +134,7 @@ void tearDownMenu() {
 
 void subTearDownMenu() {
     std::unique_ptr<Menu> v_menu(new VerticalMenu({
-            {"  Date   ", HIGHLIGHT},
+            {"  Window ", HIGHLIGHT},
             {"  Time   ", DEFAULT},
             {"  Insert ", DEFAULT},
             {"  Header ", DEFAULT},
@@ -131,7 +145,7 @@ void subTearDownMenu() {
     
     v_menu->setTheme(Theme(DEFAULT, HIGHLIGHT));
     
-    while(true){
+    for(;;) {
         
         while(v_menu->isItemNotSelected()){
             v_menu->render();
@@ -141,20 +155,33 @@ void subTearDownMenu() {
         
         switch(v_menu->getItemPosition()){
             case 1:
+                createNewWindow();
+            
+            
+            case 2:
                 /* Do stuff from here */
             break;
             
-            case 2:
-            	/* Do stuff from here */
-            break;
-            
             case 3:
-            	/* Do stuff from here */
+                /* Do stuff from here */
             break;
             
             case 5:
-            	main();
+                main();
             break;
         }
     }
+}
+
+
+void createNewWindow() {
+    std::unique_ptr<Window> frame(new Frame(Dimension(10,28), 
+        Coordinate(65,4))
+    );
+    frame->setBorderType(Window::PIPE);
+    frame->setShadow(true);
+    frame->render();
+
+
+    Text("New Window", Coordinate(70, 5));
 }
