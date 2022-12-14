@@ -1,5 +1,5 @@
 # Menus
-Menus is a DOS-inspired graphics class that is built upon the vain-engine library. It can be used to build basic DOS-based GUI applications that offer a variety of GUI elements, such as window frames and tear-down menus.
+Menus is a DOS-inspired graphics class that is built on the vain-engine library. It can be used to build basic DOS-based GUI applications that offer a variety of GUI elements, such as window frames and tear-down menus etc.
 
 
 ## Demo Project:
@@ -7,9 +7,9 @@ Menus is a DOS-inspired graphics class that is built upon the vain-engine librar
 ![](previews/demo_project.png?raw=true "")
 
 
-## #Getting Started
+# #Getting Started
 Add the `libVain Engine.a` library to the linker and copy the `Vain-Engine.dll` file from the lib folder to the main directory where you'll be running the program.
-Use the namespace `eng` for the 'Vain-Engine' library functions.
+Use the namespace `eng` for the **Vain-Engine** library functions.
 
 ### Note: 
 **_Run `build.sh` file to build the project, if dev-c++ is not installed on your machine._**
@@ -34,7 +34,7 @@ Use the namespace `eng` for the 'Vain-Engine' library functions.
     h_menu->setTheme(Theme(DEFAULT, HIGHLIGHT));
     
     // infinite loop to handle the input events.... 
-    while(true){
+    for (;;) {
         
         // If an item is not selected, then keep rendering the object
         // because an [ENTER] input key will always be in a waiting state 
@@ -63,8 +63,6 @@ Use the namespace `eng` for the 'Vain-Engine' library functions.
     }
 ```
 
-![](previews/menu.png?raw=true "")
-
 **Same procedure for vertical (drop-down) menus.**
 ```c++
     std::unique_ptr<Menu> v_menu(new VerticalMenu({
@@ -79,7 +77,10 @@ Use the namespace `eng` for the 'Vain-Engine' library functions.
     v_menu->setTheme(Theme(DEFAULT, HIGHLIGHT));
 
 ```
+
 ![](previews/menus_demo.gif?raw=true "")
+
+
 
 **Window frame class.**
 ```c++
