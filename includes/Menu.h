@@ -19,15 +19,15 @@
 #include "..\lib\includes\vain_engine.h"
 
 #include <iostream>
-#include <conio.h>
 #include <vector>
-#include <cmath>
-
+#include <thread>
+#include <windows.h>
+#include <conio.h>
 
 
 /*
 * Defining ASCII-Based Graphics 
-* Textural Values...
+* Texture Values...
 */
 
 #define NONE                          0
@@ -57,7 +57,17 @@
 
 
 
-// option item entity....
+/*
+* /////////////////////////////////////
+* 
+* [MenuItem] is an ADT class
+* to construct menu options.
+* And this class only serves
+* purpose to populate vectors for 
+* rendering the menu option items.
+* 
+* /////////////////////////////////////
+*/
 class MenuItem {
 public:
 
@@ -66,7 +76,8 @@ public:
     , color_(0x00CF) {}
 
 
-    MenuItem(const std::string& data, const int& color) : data_(data), color_(color) {
+    MenuItem(const std::string& data, const int& color) 
+    : data_(data), color_(color) {
         ++count_;
     }
 
@@ -90,12 +101,11 @@ public:
         return color_;
     }
 
-
     static int getCount() {
         return count_;
     }
     
-    ~MenuItem(){
+    ~MenuItem() {
         count_ *= 0;
     }
 
@@ -109,23 +119,30 @@ int MenuItem::count_ = 0;
 
 
 
-
-
-
-// abstract class . . .
-class Entity{
+/*
+* //////////////////////////////////////////////////
+*
+* [Entity] is an abstract and the heart of
+* of all classes to construct the concrete widget 
+* classes. And many other future implmentations
+* of widgets will be inheriting from this
+* Entity class.
+* 
+* /////////////////////////////////////////////////
+*/
+class Entity {
 public:
     Entity() {
-        coord_.x_ = 0; 
-        coord_.y_ = 0; 
+        coordinate_.x_ = 0; 
+        coordinate_.y_ = 0; 
         color_ = eng::Color.BLACK_WHITE;
     }
     
-    void setPosition(const Coordinate& coord){
-        coord_ = coord;
+    void setPosition(const Coordinate& coordinate) {
+        coordinate_ = coordinate;
     }
     
-    void setColor(const int& color){
+    void setColor(const int& color) {
         color_ = color;
     } 
     
@@ -134,21 +151,28 @@ public:
     }
     
     const Coordinate& getCoordinate() {
-        return coord_;
+        return coordinate_;
     }
     
     virtual void render() = 0;
 
 private:
     int color_;
-    Coordinate coord_;
+    Coordinate coordinate_;
 };
 
 
 
 
-// abstract Menu class...
-class Menu : public Entity{
+/*
+* //////////////////////////////////////////////////////
+*
+* Menu is an abstract and core implementation to render
+* menus from handling the graphics data to input events. 
+*
+* //////////////////////////////////////////////////////
+*/
+class Menu : public Entity {
 public:
 
     Menu() 
@@ -164,11 +188,11 @@ public:
     }
 
 
-    Menu(const std::vector<MenuItem>& items, const InputKey& key, const Coordinate& coord) 
+    Menu(const std::vector<MenuItem>& items, const InputKey& key, const Coordinate& coordinate) 
     : Menu() {
         setItems(items);
         setInputEvent(key);
-        setPosition(coord);
+        setPosition(coordinate);
     }
 
 
@@ -256,12 +280,16 @@ public:
 
 protected:
     
+
+    // Handling Input events
     void awaitSelectionInputEvent() {
         int vectorSize = items_.size();
         
+        // waiting for input event
         inputKey_ = getch();
 
-        // UP / LEFT key
+
+        // For UP / LEFT keys
         if (inputKey_ == key_.key_one_) {
             itemIndex_--;
             if (itemIndex_ < 0) {
@@ -269,7 +297,8 @@ protected:
             }
         }
 
-        // DOWN / RIGHT
+
+        // For DOWN / RIGHT keys
         if (inputKey_ == key_.key_two_) {
             ++itemIndex_;
             if (itemIndex_ >= vectorSize) {
@@ -322,14 +351,21 @@ private:
 
 
 
-// specialized menu class ....
+/*
+* //////////////////////////////////////////////////////
+*
+* VerticalMenu is a concrete specialized class to render
+* menus vertically on x-plane.
+*
+* //////////////////////////////////////////////////////
+*/
 class VerticalMenu : public Menu {
 
 public:
     VerticalMenu() : Menu() {}
 
-    VerticalMenu(const std::vector<MenuItem>& items, const Coordinate& coord)
-        : Menu(items, InputKey(UP, DOWN), Coordinate(coord)) {}
+    VerticalMenu(const std::vector<MenuItem>& items, const Coordinate& coordinate)
+        : Menu(items, InputKey(UP, DOWN), Coordinate(coordinate)) {}
 
     void render() override {
         int posY = getCoordinate().y_;
@@ -363,14 +399,21 @@ public:
 
 
 
-// specialized horizontal menu class....
+/*
+* //////////////////////////////////////////////////////
+*
+* HorizontalMenu is a concrete specialized class to render
+* menus horizontally on y-plane.
+*
+* //////////////////////////////////////////////////////
+*/
 class HorizontalMenu : public Menu {
 
 public:
     HorizontalMenu() : Menu() {}
     
-    HorizontalMenu(const std::vector<MenuItem>& items, const Coordinate& coord)
-        : Menu(items, InputKey(LEFT, RIGHT), Coordinate(coord)) {}
+    HorizontalMenu(const std::vector<MenuItem>& items, const Coordinate& coordinate)
+        : Menu(items, InputKey(LEFT, RIGHT), Coordinate(coordinate)) {}
 
     void render() override {
         int itemWidth = getMenuItemWidthSize();
@@ -396,18 +439,16 @@ public:
             exit(0);
         }
 
-        awaitSelectionInputEvent();
-        reInitVectorItemColors();
-        awaitEnterInputEvent();
+       awaitSelectionInputEvent();
+       reInitVectorItemColors();
+       awaitEnterInputEvent();
     }
 
 
 private:
     
-    // Applying Little Knowledge of mathematics :)
-    //
     // returns [MenuItem] string width size to 
-    // increment the positional coordinate on x-plane...
+    // increment the positional coordinateinate on x-plane...
     //
     // EXAMPLE: " Option " Item class object....
     //
@@ -417,7 +458,6 @@ private:
     // the overlapping of multiple rendered objects....
     // InshAllah i'll try to implement [MenuItem] string padding 
     // to equalize the object placement....
-    
     int getMenuItemWidthSize() {
         MenuItem& item = getVectorOfMenuItems().at(0);
         return item.getData().length() + 1;
@@ -427,7 +467,7 @@ private:
 
 
 
-class Window : public Entity{
+class Window : public Entity {
 public:
     
     enum Border{
@@ -445,8 +485,8 @@ public:
     }
     
     
-    void setDimension(const Dimension& dim) {
-        dimension_ = dim;
+    void setDimension(const Dimension& dimension) {
+        dimension_ = dimension;
     }
     
     
@@ -486,15 +526,17 @@ class Frame : public Window{
 public:
     Frame() : Window() {}
     
-    Frame(const Dimension& dim, const Coordinate& coord) 
+    Frame(const Dimension& dimension, const Coordinate& coordinate) 
     : Window() {
-        setPosition(coord);
-        setDimension(dim);
+        setPosition(coordinate);
+        setDimension(dimension);
     }
     
     void render() override {
 
         if (isShadowEnabled()) {
+
+            // lib vain-engine Box api call....
             backFrameBox_ = eng::Box (
                                     getDimension().length_,
                                     getDimension().width_,
@@ -504,6 +546,13 @@ public:
                                     eng::Texture.SOLID,
                                     eng::Color.BLACK_BLACK
                                 );
+
+            // lib vain-engine API Render() method.
+            // Note: Render() method is an API call from
+            // vain-engine library and render() method is a
+            // method from Entity class.
+            // Both are different in terms of their
+            // usage.
             backFrameBox_.Render();
         }
 
@@ -608,104 +657,85 @@ private:
     eng::Box backFrameBox_;
 };
 
-template <class T, class U>
-class Chart : public Entity{
+
+class Text : public Entity{
 public:
     
-    Chart() {
-        labelX_ = labelY_ = "Not Defined!";
-        isAnimationOn_ = true;
+    enum TextStyle {
+        NORMAL,
+        SINGLE,
+        DOUBLE,
+        DOTTED,
+    };
+    
+    Text() : Entity() {
+        setPosition(Coordinate(0, 0));
+        style_ = Text::NORMAL;
+        setColor(0x0070);
     }
     
-    Chart(const std::vector<T>& planeX, const std::vector<U>& planeY, const std::string& labelX, const std::string& labelY) 
-    : planeX_(planeX), planeY_(planeY), labelX_(labelX), labelY_(labelY_) {}
+    Text(const std::string& text, Coordinate coord, TextStyle style = Text::NORMAL, int color = 0x0070) : Entity() {
+        setText(text);
+        setPosition(coord);
+        setColor(color);
+        setStyle(style);
+        render();
+    }
+
     
-    void setPlaneX(const std::vector<T>& planeX) {
-        planeX_ = planeX;
+    void setStyle(TextStyle style) {
+        style_ = style;
+    }
+        
+    void setText(const std::string& text) {
+        this->text_ = text;
     }
     
-    void setPlaneY(const std::vector<U>& planeY) {
-        planeY_ = planeY;
+    std::string& getText()  {
+        return text_;
     }
     
-    void setPlaneXLabel(const std::string& labelX) {
-        labelX_ = labelX;
+    void render() override {
+        eng::Paint(getColor());
+        eng::SetPosition(getCoordinate().x_, getCoordinate().y_);
+        
+        switch(style_) {
+            case Text::NORMAL:
+            std::cout << text_;
+            break;
+            
+            case Text::SINGLE:{
+                std::cout << getText();
+                eng::SetPosition(getCoordinate().x_, getCoordinate().y_ + 1);
+                for (auto& i : getText()) {
+                    std::cout << char(196);
+                }
+                break;
+            }
+            
+            case Text::DOUBLE: {
+                std::cout << getText();
+                eng::SetPosition(getCoordinate().x_, getCoordinate().y_ + 1);
+                for (auto& i : getText()) {
+                    std::cout << char(205);
+                }
+                break;
+            }
+            
+            case Text::DOTTED: {
+                std::cout << getText();
+                eng::SetPosition(getCoordinate().x_, getCoordinate().y_ + 1);
+                for (auto& i : getText()) {
+                    std::cout << char(249);
+                }
+                break;
+            }
+        }
     }
-    
-    void setPlaneYLabel(const std::string& labelY) {
-        labelY_ = labelY;
-    }
-    
-    std::vector<T>& getPlaneXValues() {
-        return planeX_;
-    }
-    
-    std::vector<U>& getPlaneYValues() {
-        return planeY_;
-    }
-    
-    const std::string& getLabelY() {
-        return labelY_;
-    }
-    
-    const std::string& getLabelX() {
-        return labelX_;
-    }
-    
-    void setAnimation(const bool& animation) {
-        isAnimationOn_ = animation;
-    }
-    
-    const bool isAnimationOn() {
-        return isAnimationOn_;
-    }
-    
     
 private:
-    std::string labelX_;
-    std::string labelY_;
-    std::vector<T> planeX_;
-    std::vector<U> planeY_;
-    bool isAnimationOn_;
+    std::string text_;
+    TextStyle style_;
 };
-
-template <class T, class U>
-class BarChart : public Chart<T, U>{
-public:
-    void render() override {
-        Frame frame_;
-        
-        int length = this->getPlaneYValues().size();
-        int width = this->getPlaneXValues().size();
-        frame_.setDimension( Dimension( std::pow(length, 2), std::pow(width, 2.7) ) );
-        frame_.setColor(0x00F0);
-        frame_.setPosition(Coordinate(8, 6));
-        frame_.render();
-        
-        eng::SetPosition(12,20);
-        for(auto& i : this->getPlaneXValues()) {
-            std::cout << i << "  ";
-        }
-        
-        int y = length;
-        for(auto& i : this->getPlaneYValues()) {
-            eng::SetPosition(9, y+=length);
-            std::cout << i;
-        }
-    }
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
 #endif
 #endif

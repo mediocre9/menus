@@ -1,7 +1,13 @@
+/*
+* Simple POCO classes
+*/
+
 #ifndef ABSTRACT_TYPES_H
 #define ABSTRACT_TYPES_H
 
-// General Dimension class for widgets...
+/* 
+* General Dimension class for widgets
+*/
 struct Dimension {
     
     Dimension() {}
@@ -11,42 +17,52 @@ struct Dimension {
         this->width_  = width;
     }
 
-    Dimension(const Dimension& dim) {
-        this->length_ = dim.length_;
-        this->width_  = dim.width_;
+    Dimension(const Dimension& dimension) {
+        this->length_ = dimension.length_;
+        this->width_  = dimension.width_;
     }
 
     int length_;
     int width_;
 };
 
-// Widgets Rendering Coordinates...
+/* 
+* Widgets Rendering Coordinates
+*/
 struct Coordinate {
 
-    Coordinate() {
-        x_ = 0;
-        y_ = 0;
-    }
+    Coordinate() {}
 
     Coordinate(int x, int y) {
         this->x_ = x;
         this->y_ = y;
     }
 
-    Coordinate(const Coordinate& coord) {
-        this->x_ = coord.x_;
-        this->y_ = coord.y_;
+    Coordinate(const Coordinate& coordinate) {
+        this->x_ = coordinate.x_;
+        this->y_ = coordinate.y_;
     }
 
     int x_;
     int y_;
 };
 
-// MenuOption selection theme...
+
+/*
+* MenuOption selection theme...
+* Note: To achieve colors
+* we have to use Hex-values 
+* because winapi uses hex-values
+* at operating system level api calls
+* so in order to use hex values
+* we can use int, std::uint8_t, 
+* std::uint32_t datatypes.
+* We will be using int datatype.
+*/
 struct Theme {
     
     Theme() {}
-
+    
     Theme(int background, int highlight) {
         background_ = background;
         highlight_  = highlight;
@@ -65,6 +81,10 @@ enum Keys {
 };
 
 
+
+/*
+* For input event handling 
+*/
 struct InputKey {
     
     InputKey() {}

@@ -2,9 +2,17 @@
 Menus is a DOS-inspired graphics class that is built upon the vain-engine library. It can be used to build basic DOS-based GUI applications that offer a variety of GUI elements, such as window frames and tear-down menus.
 
 
+## Demo Project:
+![](previews/demo.png?raw=true "")
+![](previews/demo_project.png?raw=true "")
+
+
 ## #Getting Started
 Add the `libVain Engine.a` library to the linker and copy the `Vain-Engine.dll` file from the lib folder to the main directory where you'll be running the program.
 Use the namespace `eng` for the 'Vain-Engine' library functions.
+
+### Note: 
+**_Run `build.sh` file to build the project, if dev-c++ is not installed on your machine._**
 
 ## Usage
 
