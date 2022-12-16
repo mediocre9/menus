@@ -1,5 +1,5 @@
 /*****************************************************************
- * Vain Engine -- is a dynamic link multimedia library that provides
+ * Vain Engine -- is a dynamic link library that provides
  * 8-bit graphics and audio functionality to build simple
  * application/games..
  *
