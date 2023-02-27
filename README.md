@@ -1,5 +1,7 @@
 # Menus
-Menus is a DOS-inspired graphics class that is built on the vain-engine library. It can be used to build basic DOS-based GUI applications that offer a variety of GUI elements, such as window frames and tear-down menus etc.
+> Menus is a DOS-inspired graphics class that is built on the vain-engine library. 
+> It can be used to build basic DOS-based GUI applications that offer a variety of GUI 
+> elements, such as window frames and tear-down menus etc.
 
 
 ## Demo Project:
