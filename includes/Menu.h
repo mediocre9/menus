@@ -82,13 +82,15 @@ public:
     }
 
 
-    void setData(const std::string& data) {
+    const MenuItem& setData(const std::string& data) {
         data_ = data;
+        return *this;
     }
 
 
-    void setColor(const int& color) {
+    const MenuItem& setColor(const int& color) {
         color_ = color;
+        return *this;
     }
 
 
@@ -130,6 +132,7 @@ int MenuItem::count_ = 0;
 * 
 * /////////////////////////////////////////////////
 */
+template <class T_Entity>
 class Entity {
 public:
     Entity() {
@@ -138,12 +141,14 @@ public:
         color_ = eng::Color.BLACK_WHITE;
     }
     
-    void setPosition(const Coordinate& coordinate) {
+    const T_Entity& setPosition(const Coordinate& coordinate) {
         coordinate_ = coordinate;
+        return static_cast<T_Entity&>(*this);
     }
     
-    void setColor(const int& color) {
+    const T_Entity& setColor(const int& color) {
         color_ = color;
+        return static_cast<T_Entity&>(*this);
     } 
     
     int getColor() {
@@ -172,7 +177,7 @@ private:
 *
 * //////////////////////////////////////////////////////
 */
-class Menu : public Entity {
+class Menu : public Entity<Menu> {
 public:
 
     Menu() 
@@ -216,13 +221,15 @@ public:
     }
 
 
-    void setInputEvent(const InputKey& key) {
+    const Menu& setInputEvent(const InputKey& key) {
         key_ = key;
+        return *this;
     }
     
 
-    void setTheme(const Theme& theme) {
+    const Menu& setTheme(const Theme& theme) {
         theme_ = theme;
+        return *this;
     }
 
 
@@ -231,8 +238,9 @@ public:
     }
 
 
-    void setScroll(bool active) {
+    Menu& setScroll(bool active) {
         isScrollActive_ = active;
+        return *this;
     }
 
 
@@ -354,17 +362,17 @@ private:
 /*
 * //////////////////////////////////////////////////////
 *
-* VerticalMenu is a concrete specialized class to render
+* HorizontalMenu is a concrete specialized class to render
 * menus vertically on x-plane.
 *
 * //////////////////////////////////////////////////////
 */
-class VerticalMenu : public Menu {
+class HorizontalMenu : public Menu {
 
 public:
-    VerticalMenu() : Menu() {}
+    HorizontalMenu() : Menu() {}
 
-    VerticalMenu(const std::vector<MenuItem>& items, const Coordinate& coordinate)
+    HorizontalMenu(const std::vector<MenuItem>& items, const Coordinate& coordinate)
         : Menu(items, InputKey(UP, DOWN), Coordinate(coordinate)) {}
 
     void render() override {
@@ -402,17 +410,17 @@ public:
 /*
 * //////////////////////////////////////////////////////
 *
-* HorizontalMenu is a concrete specialized class to render
+* VerticalMenu is a concrete specialized class to render
 * menus horizontally on y-plane.
 *
 * //////////////////////////////////////////////////////
 */
-class HorizontalMenu : public Menu {
+class VerticalMenu : public Menu {
 
 public:
-    HorizontalMenu() : Menu() {}
+    VerticalMenu() : Menu() {}
     
-    HorizontalMenu(const std::vector<MenuItem>& items, const Coordinate& coordinate)
+    VerticalMenu(const std::vector<MenuItem>& items, const Coordinate& coordinate)
         : Menu(items, InputKey(LEFT, RIGHT), Coordinate(coordinate)) {}
 
     void render() override {
@@ -467,7 +475,7 @@ private:
 
 
 
-class Window : public Entity {
+class Window : public Entity<Window> {
 public:
     
     enum Border{
@@ -485,23 +493,27 @@ public:
     }
     
     
-    void setDimension(const Dimension& dimension) {
+    const Window& setDimension(const Dimension& dimension) {
         dimension_ = dimension;
+        return static_cast<Window&>(*this);
     }
     
     
-    const Dimension& getDimension() {
-        return dimension_;
-    }
     
-    
-    void setShadow(const bool& active) {
+    Window& setShadow(const bool& active) {
         shadow_ = active;
+        return static_cast<Window&>(*this);
     }
     
     
-    void setBorderType(const Window::Border& border) {
+    Window& setBorderType(const Window::Border& border) {
         border_ = border;
+        return static_cast<Window&>(*this);
+    }
+    
+    
+	Dimension& getDimension() {
+        return dimension_;
     }
     
     
@@ -522,7 +534,7 @@ private:
 };
 
 
-class Frame : public Window{
+class Frame : public Window {
 public:
     Frame() : Window() {}
     
@@ -658,7 +670,7 @@ private:
 };
 
 
-class Text : public Entity{
+class Text : public Entity<Text> {
 public:
     
     enum TextStyle {
@@ -683,12 +695,14 @@ public:
     }
 
     
-    void setStyle(TextStyle style) {
+    const Text& setStyle(TextStyle style) {
         style_ = style;
+        return *this;
     }
         
-    void setText(const std::string& text) {
+    const Text& setText(const std::string& text) {
         this->text_ = text;
+        return *this;
     }
     
     std::string& getText()  {
