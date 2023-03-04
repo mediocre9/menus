@@ -9,18 +9,13 @@ void subTearDownMenu();
 void createNewWindow();
 
 int main() {
-    
-    eng::CursorState(10,false);
-    system("title Menus (demo) & mode 100,27 & cls & color 87");
-    
+    WinApi::videoMode("Demo", Dimension(700, 934));
     
     // window frame....
-    std::unique_ptr<Window> frame(new Frame(Dimension(20,48), 
-        Coordinate(5,4))
-    );
-    frame->setBorderType(Window::LINE);
-    frame->setShadow(true);
-    frame->render();
+    Frame(Dimension(20,48), Coordinate(5,4))
+	.setBorderType(Window::LINE)
+	.setShadow(true)
+	.render();
 
 
     // Text widget . . . 
@@ -31,7 +26,7 @@ int main() {
     
 
     // Menus . . .
-    std::unique_ptr<Menu> h_menu(new HorizontalMenu({
+    std::unique_ptr<Menu> h_menu(new VerticalMenu({
             {"  New    ", HIGHLIGHT},
             {"  File   ", DEFAULT},
             {"  Edit   ", DEFAULT},
@@ -82,9 +77,9 @@ int main() {
 }
 
 
-// vertical menus........
+// horizontal menus........
 void tearDownMenu() {
-    std::unique_ptr<Menu> v_menu(new VerticalMenu({
+    std::unique_ptr<Menu> v_menu(new HorizontalMenu({
             {"  New      ", HIGHLIGHT},
             {"  Open     ", DEFAULT},
             {"  Save     ", DEFAULT},
@@ -132,7 +127,7 @@ void tearDownMenu() {
 
 
 void subTearDownMenu() {
-    std::unique_ptr<Menu> v_menu(new VerticalMenu({
+    std::unique_ptr<Menu> v_menu(new HorizontalMenu({
             {"  Window ", HIGHLIGHT},
             {"  Time   ", DEFAULT},
             {"  Insert ", DEFAULT},
@@ -174,13 +169,10 @@ void subTearDownMenu() {
 
 
 void createNewWindow() {
-    std::unique_ptr<Window> frame(new Frame(Dimension(10,28), 
-        Coordinate(65,4))
-    );
-    frame->setBorderType(Window::PIPE);
-    frame->setShadow(true);
-    frame->render();
-
+    Frame(Dimension(10,28), Coordinate(65,4))
+	.setBorderType(Window::PIPE)
+    .setShadow(true)
+    .render();
 
     Text("New Window", Coordinate(70, 5));
 }
