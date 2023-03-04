@@ -9,10 +9,7 @@ void subTearDownMenu();
 void createNewWindow();
 
 int main() {
-    
-    eng::CursorState(10,false);
-    system("title Menus (demo) & mode 100,27 & cls & color 87");
-    
+    WinApi::videoMode("Demo", Dimension(700, 934));
     
     // window frame....
     Frame(Dimension(20,48), Coordinate(5,4))
