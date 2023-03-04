@@ -20,7 +20,6 @@
 
 #include <iostream>
 #include <vector>
-#include <thread>
 #include <windows.h>
 #include <conio.h>
 
@@ -54,6 +53,30 @@
 #define DOUBLE_BOTTOM_RIGHT_EDGE      188
 #define DOUBLE_VERTICAL_STROKE        186
 #define DOUBLE_HORIZONTAL_STROKE      205
+
+
+
+
+
+
+struct WinApi {
+	static void videoMode(std::string title, Dimension dimension) {
+        SetConsoleTitle(title.c_str());
+        HWND consoleWindow = GetConsoleWindow();
+        RECT rect = {100, 100, dimension.width_, dimension.length_} ;
+        MoveWindow(consoleWindow, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, TRUE);
+        
+        DWORD style = GetWindowLong(consoleWindow, GWL_STYLE);
+        style &= ~WS_MAXIMIZEBOX;
+        SetWindowLong(consoleWindow, GWL_STYLE, style);
+        SetWindowPos(consoleWindow, NULL, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_FRAMECHANGED);
+        system("color 80 & cls");
+        eng::CursorState(10,false);
+    }
+};
+
+
+
 
 
 
