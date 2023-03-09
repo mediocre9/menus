@@ -57,26 +57,21 @@
 
 
 
-
-
 struct WinApi {
 	static void videoMode(std::string title, Dimension dimension) {
-        SetConsoleTitle(title.c_str());
-        HWND consoleWindow = GetConsoleWindow();
-        RECT rect = {100, 100, dimension.width_, dimension.length_} ;
-        MoveWindow(consoleWindow, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, TRUE);
+        	SetConsoleTitle(title.c_str());
+        	HWND consoleWindow = GetConsoleWindow();
+        	RECT rect = {100, 100, dimension.width_, dimension.length_} ;
+        	MoveWindow(consoleWindow, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, TRUE);
         
-        DWORD style = GetWindowLong(consoleWindow, GWL_STYLE);
-        style &= ~WS_MAXIMIZEBOX;
-        SetWindowLong(consoleWindow, GWL_STYLE, style);
-        SetWindowPos(consoleWindow, NULL, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_FRAMECHANGED);
-        system("color 80 & cls");
-        eng::CursorState(10,false);
-    }
+        	DWORD style = GetWindowLong(consoleWindow, GWL_STYLE);
+        	style &= ~WS_MAXIMIZEBOX;
+        	SetWindowLong(consoleWindow, GWL_STYLE, style);
+        	SetWindowPos(consoleWindow, NULL, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_FRAMECHANGED);
+        	system("color 80 & cls");
+        	eng::CursorState(10,false);
+    	}
 };
-
-
-
 
 
 
@@ -386,7 +381,7 @@ private:
 * //////////////////////////////////////////////////////
 *
 * HorizontalMenu is a concrete specialized class to render
-* menus vertically on x-plane.
+* menus horizontally on x-plane.
 *
 * //////////////////////////////////////////////////////
 */
@@ -434,7 +429,7 @@ public:
 * //////////////////////////////////////////////////////
 *
 * VerticalMenu is a concrete specialized class to render
-* menus horizontally on y-plane.
+* menus vertically on y-plane.
 *
 * //////////////////////////////////////////////////////
 */
@@ -479,7 +474,7 @@ public:
 private:
     
     // returns [MenuItem] string width size to 
-    // increment the positional coordinateinate on x-plane...
+    // increment the positional coordinates on x-plane...
     //
     // EXAMPLE: " Option " Item class object....
     //
@@ -582,7 +577,6 @@ public:
                                     eng::Color.BLACK_BLACK
                                 );
 
-            // lib vain-engine API Render() method.
             // Note: Render() method is an API call from
             // vain-engine library and render() method is a
             // method from Entity class.
