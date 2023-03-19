@@ -5,11 +5,6 @@ lib/
 *.o
 *.exe
 
-# project files
-Makefile.win
-Menus.dev
-Menus.layout
-
 # libraries
 "Vain Engine".dll
 
