@@ -14,7 +14,7 @@ Add the `libVain Engine.a` library to the linker and copy the `Vain-Engine.dll` 
 Use the namespace `eng` for the **Vain-Engine** library functions.
 
 ### Note: 
-**_Run `build.sh` file to build the project, if dev-c++ is not installed on your machine._**
+**_Run `build.sh` file to compile and build the project._**
 
 ## Usage
 
