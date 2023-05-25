@@ -1,23 +1,18 @@
 # Menus
-> Menus is a DOS-inspired graphics class that is built on the vain-engine library. 
-> It can be used to build basic DOS-based GUI applications that offer a variety of GUI 
-> elements, such as window frames and tear-down menus etc.
-
-
-## Demo Project:
-![](previews/demo.png?raw=true "")
-![](previews/demo_project.png?raw=true "")
-
+> Menus is a Borland-inspired graphics library that is built on a custom multimedia (DLL) dynamic link library **vain engine**
+> to create basic GUI elements.
 
 # #Getting Started
-Add the `libVain Engine.a` library to the linker and copy the `Vain-Engine.dll` file from the lib folder to the main directory where you'll be running the program.
-Use the namespace `eng` for the **Vain-Engine** library functions.
+> For a new project, Add the `libVain Engine.a` library to the linker and copy the `Vain-Engine.dll` file from the lib folder to the main directory where 
+> you'll be running the program.
+> Use the namespace `eng` for the **Vain-Engine** library functions.
 
 ### Note: 
-**_Run `build.sh` file to compile and build the project._**
+Run `build.sh` file to compile and build the project.
 
 ## Usage
 
+> ### Horizontal Menus: 
 ```c++
     const int DEFAULT = Color.BRIGHT_WHITE_BLACK;
     const int HIGHLIGHT = Color.BRIGHT_BLUE_BRIGHT_WHITE;
@@ -35,18 +30,13 @@ Use the namespace `eng` for the **Vain-Engine** library functions.
     // initialize theme data....
     h_menu->setTheme(Theme(DEFAULT, HIGHLIGHT));
     
-    // infinite loop to handle the input events.... 
     for (;;) {
-        
-        // If an item is not selected, then keep rendering the object
-        // because an [ENTER] input key will always be in a waiting state 
-        // for an event generation.
-        // And if any input event occurs, then the internal loop
-        // will break and return the index...
+    
         while(!h_menu->isItemSelected()){
             h_menu->render();
         }
         
+        // must be called to re-initialize the process
         h_menu->restart();
         
         switch(h_menu->getItemPosition()){
@@ -65,7 +55,7 @@ Use the namespace `eng` for the **Vain-Engine** library functions.
     }
 ```
 
-**Same procedure for vertical (drop-down) menus.**
+> ### Verical Menus: 
 ```c++
     std::unique_ptr<Menu> v_menu(new VerticalMenu({
             {" New   ", HIGHLIGHT},
@@ -79,22 +69,23 @@ Use the namespace `eng` for the **Vain-Engine** library functions.
     v_menu->setTheme(Theme(DEFAULT, HIGHLIGHT));
 
 ```
-
 ![](previews/menus_demo.gif?raw=true "")
 
-
-
-**Window frame class.**
+> ### Frames: 
 ```c++
-    std::unique_ptr<Window> frame(new Frame(Dimension(10,30), 
+    std::unique_ptr<Window> frame(new Frame(Dimension(10, 30), 
         Coordinate(3,5))
     );
         
     frame->setShadow(true);
     frame->render();
 ```
-
 ![](previews/frame.png?raw=true "")
+
+> ## Build Previews:
+![](previews/demo.png?raw=true "")
+![](previews/demo_project.png?raw=true "")
+
 
 
 
