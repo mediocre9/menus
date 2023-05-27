@@ -77,7 +77,7 @@ Run `build.sh` file to compile and build the project.
         Coordinate(3,5))
     );
         
-    frame->setShadow(true);
+    frame->enableShadow(true);
     frame->render();
 ```
 ![](previews/frame.png?raw=true "")
