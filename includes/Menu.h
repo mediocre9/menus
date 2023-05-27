@@ -18,6 +18,8 @@
 #include "AbstractTypes.h"
 #include "..\lib\includes\vain_engine.h"
 
+#include <algorithm>
+#include <sstream>
 #include <iostream>
 #include <vector>
 #include <windows.h>
@@ -55,6 +57,7 @@
 #define DOUBLE_HORIZONTAL_STROKE      205
 
 
+typedef eng::Color::HexaDecimalColours Color;
 
 
 /*
@@ -62,7 +65,7 @@
 * window control system
 */
 struct WinApi {
-   static void videoMode(std::string title, Dimension dimension, eng::Color::HexaDecimalColours color = eng::Color.BLACK_BLACK) {
+	static void videoMode(std::string title, Dimension dimension, Color color = eng::Color.BLACK_BLACK) {
         SetConsoleTitle(title.c_str());
         HWND consoleWindow = GetConsoleWindow();
         RECT rect = {100, 100, dimension.width_, dimension.length_} ;
@@ -72,7 +75,19 @@ struct WinApi {
         style &= ~WS_MAXIMIZEBOX;
         SetWindowLong(consoleWindow, GWL_STYLE, style);
         SetWindowPos(consoleWindow, NULL, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_FRAMECHANGED);
-        
+
+        // for disabling resizable window.... 
+        SetWindowLong(consoleWindow, GWL_STYLE, GetWindowLong(consoleWindow, GWL_STYLE) & ~WS_MAXIMIZEBOX & ~WS_SIZEBOX);
+
+        // for removing side scroll bar... 
+        HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
+        CONSOLE_SCREEN_BUFFER_INFO info;
+        GetConsoleScreenBufferInfo(handle, &info);
+        COORD new_size ;
+        new_size.X = info.srWindow.Right - info.srWindow.Left + 1;
+        new_size.Y = info.srWindow.Bottom - info.srWindow.Top + 1;
+        SetConsoleScreenBufferSize(handle, new_size);
+
         // direct passing of color param
         // to system() call...
         std::string windowColorCmd = "color ";
@@ -81,17 +96,15 @@ struct WinApi {
         std::string convertedHexVal = stream.str();
         
         windowColorCmd
-		.append({convertedHexVal[0]})
-		.append({convertedHexVal[1]})
-		.append(" & cls");
-		
-	system(windowColorCmd.c_str()); 
-		   
+		    .append({convertedHexVal[0]})
+		    .append({convertedHexVal[1]})
+		    .append(" & cls");
+    
+		    system(windowColorCmd.c_str()); 
         eng::CursorState(10,false);
         eng::SetPosition(-1, -1);
     }
 };
-
 
 
 /*
@@ -110,10 +123,10 @@ public:
 
     MenuItem() 
     : data_("Not defined!")
-    , color_(0x00CF) {}
+    , color_(eng::Color.BLACK_WHITE) {}
 
 
-    MenuItem(const std::string& data, const int& color) 
+    MenuItem(const std::string& data, const Color& color) 
     : data_(data), color_(color) {
         ++count_;
     }
@@ -125,7 +138,7 @@ public:
     }
 
 
-    const MenuItem& setColor(const int& color) {
+    const MenuItem& setColor(const Color& color) {
         color_ = color;
         return *this;
     }
@@ -135,8 +148,7 @@ public:
         return data_;
     }
 
-
-    int getColor() {
+    const Color& getColor() {
         return color_;
     }
 
@@ -152,7 +164,7 @@ public:
 
 private:
     std::string data_;
-    int color_;
+    Color color_;
 };
 int MenuItem::count_ = 0;
 
@@ -183,23 +195,31 @@ public:
         return static_cast<T_Entity&>(*this);
     }
     
-    const T_Entity& setColor(const int& color) {
+    const T_Entity& setColor(const Color& color) {
         color_ = color;
         return static_cast<T_Entity&>(*this);
     } 
     
-    int getColor() {
+    const Color& getColor() {
         return color_;
     }
     
     const Coordinate& getCoordinate() {
         return coordinate_;
     }
+
+    int getPositionX() const {
+        return coordinate_.x_;
+    }
+
+    int getPositionY() const {
+        return coordinate_.y_;
+    }
     
     virtual void render() = 0;
 
 private:
-    int color_;
+    Color color_;
     Coordinate coordinate_;
 };
 
@@ -232,33 +252,33 @@ public:
 
     Menu(const std::vector<MenuItem>& items, const InputKey& key, const Coordinate& coordinate) 
     : Menu() {
-        setItems(items);
-        setInputEvent(key);
+        addMenuItems(items);
+        setInputKeys(key);
         setPosition(coordinate);
     }
 
 
-    void setItems(const std::vector<MenuItem>& items) {
+    void addMenuItems(const std::vector<MenuItem>& items) {
         items_ = items;
     }
 
 
-    void setItem(const MenuItem& item) {
+    void addItem(const MenuItem& item) {
         items_.push_back(item);
     }
 
 
-    const MenuItem& getOptionItem(int index) const {
+    const MenuItem& getMenuItemAt(int index) const {
         return items_.at(index);
     }
     
     
-   void clearItemContainer() {
+   void dropAllMenuItems() {
         items_.clear();
     }
 
 
-    const Menu& setInputEvent(const InputKey& key) {
+    const Menu& setInputKeys(const InputKey& key) {
         key_ = key;
         return *this;
     }
@@ -275,7 +295,7 @@ public:
     }
 
 
-    Menu& setScroll(bool active) {
+    Menu& enableScroll(bool active) {
         isScrollActive_ = active;
         return *this;
     }
@@ -296,7 +316,7 @@ public:
     }
 
 
-    const Theme& getTheme() {
+    const Theme& getThemeObject() {
         return theme_;
     }
 
@@ -413,7 +433,7 @@ public:
         : Menu(items, InputKey(UP, DOWN), Coordinate(coordinate)) {}
 
     void render() override {
-        int posY = getCoordinate().y_;
+        int posY = getPositionY();
 
         try {
             if (!isVectorOfItemsEmpty()) {
@@ -462,7 +482,7 @@ public:
 
     void render() override {
         int itemWidth = getMenuItemWidthSize();
-        int posX = getCoordinate().x_;
+        int posX = getPositionX();
 
         try {
             if (!isVectorOfItemsEmpty()) {
@@ -537,7 +557,7 @@ public:
     
     
     
-    Window& setShadow(const bool& active) {
+    Window& enableShadow(const bool& active) {
         shadow_ = active;
         return static_cast<Window&>(*this);
     }
@@ -719,10 +739,11 @@ public:
     Text() : Entity() {
         setPosition(Coordinate(0, 0));
         style_ = Text::NORMAL;
-        setColor(0x0070);
+        setColor(eng::Color.BLACK_WHITE);
     }
     
-    Text(const std::string& text, Coordinate coord, TextStyle style = Text::NORMAL, int color = 0x0070) : Entity() {
+    Text(const std::string& text, Coordinate coord, TextStyle style = Text::NORMAL, Color color = eng::Color.WHITE_BLACK) 
+    : Entity() {
         setText(text);
         setPosition(coord);
         setColor(color);

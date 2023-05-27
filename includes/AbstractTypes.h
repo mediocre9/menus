@@ -4,6 +4,8 @@
 
 #ifndef ABSTRACT_TYPES_H
 #define ABSTRACT_TYPES_H
+#include "AbstractTypes.h"
+#include "..\lib\includes\vain_engine.h"
 
 /* 
 * General Dimension class for widgets
@@ -59,17 +61,18 @@ struct Coordinate {
 * std::uint32_t datatypes.
 * We will be using int datatype.
 */
+typedef eng::Color::HexaDecimalColours Color;
 struct Theme {
     
     Theme() {}
     
-    Theme(int background, int highlight) {
+    Theme(Color background, Color highlight) {
         background_ = background;
         highlight_  = highlight;
     }
-
-    int background_;
-    int highlight_;
+    
+    Color background_;
+    Color highlight_;
 };
 
 

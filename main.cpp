@@ -1,21 +1,23 @@
 #include "includes\Menu.h"
 #include <memory>
 
-const int DEFAULT   = eng::Color.BRIGHT_WHITE_BLACK;
-const int HIGHLIGHT = eng::Color.BRIGHT_BLUE_BRIGHT_WHITE;
+typedef eng::Color::HexaDecimalColours Color;
+const Color DEFAULT   = eng::Color.BRIGHT_WHITE_BLACK;
+const Color HIGHLIGHT = eng::Color.BRIGHT_BLUE_BRIGHT_WHITE;
 
 void tearDownMenu();
 void subTearDownMenu();
 void createNewWindow();
 
 int main() {
-    WinApi::videoMode("Demo", Dimension(700, 934));
-    
+    WinApi::videoMode("Demo", Dimension(700, 934), eng::Color.BLUE_BLACK);
+
     // window frame....
     Frame(Dimension(20,48), Coordinate(5,4))
 	.setBorderType(Window::LINE)
-	.setShadow(true)
+	.enableShadow(true)
 	.render();
+	
 
 
     // Text widget . . . 
@@ -171,7 +173,7 @@ void subTearDownMenu() {
 void createNewWindow() {
     Frame(Dimension(10,28), Coordinate(65,4))
 	.setBorderType(Window::PIPE)
-    .setShadow(true)
+    .enableShadow(true)
     .render();
 
     Text("New Window", Coordinate(70, 5));
