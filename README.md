@@ -14,8 +14,10 @@ Run `build.sh` file to compile and build the project.
 
 > ### Horizontal Menus: 
 ```c++
-    const int DEFAULT = Color.BRIGHT_WHITE_BLACK;
-    const int HIGHLIGHT = Color.BRIGHT_BLUE_BRIGHT_WHITE;
+    typedef eng::Color::HexaDecimalColours Color;
+    const Color DEFAULT   = eng::Color.BRIGHT_WHITE_BLACK;
+    const Color HIGHLIGHT = eng::Color.BRIGHT_BLUE_BRIGHT_WHITE;
+
     
     // pass vector initializer list...
     std::unique_ptr<Menu> h_menu(new HorizontalMenu({
