@@ -88,7 +88,6 @@ struct WinApi {
         new_size.Y = info.srWindow.Bottom - info.srWindow.Top + 1;
         SetConsoleScreenBufferSize(handle, new_size);
 
-
         // direct passing of color param
         // to system() call...
         std::string windowColorCmd = "color ";
@@ -97,12 +96,11 @@ struct WinApi {
         std::string convertedHexVal = stream.str();
         
         windowColorCmd
-		.append({convertedHexVal[0]})
-		.append({convertedHexVal[1]})
-		.append(" & cls");
-		
-		system(windowColorCmd.c_str()); 
-		   
+		    .append({convertedHexVal[0]})
+		    .append({convertedHexVal[1]})
+		    .append(" & cls");
+    
+		    system(windowColorCmd.c_str()); 
         eng::CursorState(10,false);
         eng::SetPosition(-1, -1);
     }
