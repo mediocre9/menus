@@ -57,15 +57,13 @@
 #define DOUBLE_HORIZONTAL_STROKE      205
 
 
-typedef eng::Color::HexaDecimalColours Color;
-
 
 /*
 * A wrapper over winapi
 * window control system
 */
 struct WinApi {
-	static void videoMode(std::string title, Dimension dimension, Color color = eng::Color.BLACK_BLACK) {
+    static void videoMode(const std::string& title, const Dimension& dimension, Color color = eng::Color.BLACK_BLACK) {
         SetConsoleTitle(title.c_str());
         HWND consoleWindow = GetConsoleWindow();
         RECT rect = {100, 100, dimension.width_, dimension.length_} ;
@@ -96,11 +94,11 @@ struct WinApi {
         std::string convertedHexVal = stream.str();
         
         windowColorCmd
-		    .append({convertedHexVal[0]})
-		    .append({convertedHexVal[1]})
-		    .append(" & cls");
+            .append({convertedHexVal[0]})
+            .append({convertedHexVal[1]})
+            .append(" & cls");
     
-		    system(windowColorCmd.c_str()); 
+            system(windowColorCmd.c_str()); 
         eng::CursorState(10,false);
         eng::SetPosition(-1, -1);
     }
@@ -132,13 +130,13 @@ public:
     }
 
 
-    const MenuItem& setData(const std::string& data) {
+    MenuItem& setData(const std::string& data) {
         data_ = data;
         return *this;
     }
 
 
-    const MenuItem& setColor(const Color& color) {
+    MenuItem& setColor(const Color& color) {
         color_ = color;
         return *this;
     }
@@ -190,12 +188,12 @@ public:
         color_ = eng::Color.BLACK_WHITE;
     }
     
-    const T_Entity& setPosition(const Coordinate& coordinate) {
+    T_Entity& setPosition(const Coordinate& coordinate) {
         coordinate_ = coordinate;
         return static_cast<T_Entity&>(*this);
     }
     
-    const T_Entity& setColor(const Color& color) {
+    T_Entity& setColor(const Color& color) {
         color_ = color;
         return static_cast<T_Entity&>(*this);
     } 
@@ -252,13 +250,13 @@ public:
 
     Menu(const std::vector<MenuItem>& items, const InputKey& key, const Coordinate& coordinate) 
     : Menu() {
-        addMenuItems(items);
+        addItems(items);
         setInputKeys(key);
         setPosition(coordinate);
     }
 
 
-    void addMenuItems(const std::vector<MenuItem>& items) {
+    void addItems(const std::vector<MenuItem>& items) {
         items_ = items;
     }
 
@@ -278,13 +276,13 @@ public:
     }
 
 
-    const Menu& setInputKeys(const InputKey& key) {
+    Menu& setInputKeys(const InputKey& key) {
         key_ = key;
         return *this;
     }
     
 
-    const Menu& setTheme(const Theme& theme) {
+    Menu& setTheme(const Theme& theme) {
         theme_ = theme;
         return *this;
     }
@@ -550,7 +548,7 @@ public:
     }
     
     
-    const Window& setDimension(const Dimension& dimension) {
+    Window& setDimension(const Dimension& dimension) {
         dimension_ = dimension;
         return static_cast<Window&>(*this);
     }
@@ -569,7 +567,7 @@ public:
     }
     
     
-	Dimension& getDimension() {
+    Dimension& getDimension() {
         return dimension_;
     }
     
@@ -752,12 +750,12 @@ public:
     }
 
     
-    const Text& setStyle(TextStyle style) {
+    Text& setStyle(TextStyle style) {
         style_ = style;
         return *this;
     }
         
-    const Text& setText(const std::string& text) {
+    Text& setText(const std::string& text) {
         this->text_ = text;
         return *this;
     }

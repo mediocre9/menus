@@ -3,7 +3,7 @@
 
 typedef eng::Color::HexaDecimalColours Color;
 const Color DEFAULT   = eng::Color.BRIGHT_WHITE_BLACK;
-const Color HIGHLIGHT = eng::Color.BRIGHT_BLUE_BRIGHT_WHITE;
+const Color HIGHLIGHT = eng::Color.BRIGHT_RED_BRIGHT_WHITE;
 
 void tearDownMenu();
 void subTearDownMenu();
