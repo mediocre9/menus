@@ -4,7 +4,6 @@
 
 #ifndef ABSTRACT_TYPES_H
 #define ABSTRACT_TYPES_H
-#include "AbstractTypes.h"
 #include "..\lib\includes\vain_engine.h"
 
 typedef eng::Color::HexaDecimalColours Color;
