@@ -153,10 +153,6 @@ public:
     static int getCount() {
         return count_;
     }
-    
-    ~MenuItem() {
-        count_ *= 0;
-    }
 
     static int count_;
 
@@ -334,16 +330,9 @@ public:
     }
 
 
-    ~Menu() {
-        itemIndex_ = 0;
-        isItemSelected_ = false;
-        items_.clear();
-    }
-
 
 protected:
-    
-
+	
     // Handling Input events
     void awaitSelectionInputEvent() {
         int vectorSize = items_.size();
@@ -383,7 +372,8 @@ protected:
         
         if (itemIndex_ >= 0) {
             
-            (items_.at(itemIndex_)).setColor(theme_.highlight_);
+            MenuItem item = items_.at(itemIndex_);
+            item.setColor(theme_.highlight_);
             
             if (inputKey_ == ENTER) {
                 isItemSelected_ = true;
