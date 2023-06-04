@@ -71,7 +71,8 @@ Run `build.sh` file to compile and build the project.
     v_menu->setTheme(Theme(DEFAULT, HIGHLIGHT));
 
 ```
-![](previews/menus_demo.gif?raw=true "")
+
+<img src="previews/menus_demo.gif>
 
 > ### Frames: 
 ```c++
@@ -82,11 +83,11 @@ Run `build.sh` file to compile and build the project.
     frame->enableShadow(true);
     frame->render();
 ```
-![](previews/frame.png?raw=true "")
+<img src="previews/frame.png">
 
 > ## Build Previews:
-![](previews/demo.png?raw=true "")
-![](previews/demo_project.png?raw=true "")
+<img src="previews/demo.png">
+<img src="previews/demo_project.png">
 
 
 
