@@ -72,7 +72,7 @@ Run `build.sh` file to compile and build the project.
 
 ```
 
-<img src="previews/menus_demo.gif>
+<img src="previews/menus_demo.gif">
 
 > ### Frames: 
 ```c++
