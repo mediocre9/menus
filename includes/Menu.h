@@ -372,7 +372,7 @@ protected:
         
         if (itemIndex_ >= 0) {
             
-            MenuItem item = items_.at(itemIndex_);
+            MenuItem& item = items_.at(itemIndex_);
             item.setColor(theme_.highlight_);
             
             if (inputKey_ == ENTER) {
