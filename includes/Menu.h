@@ -4,7 +4,6 @@
 * @brief A GUI component library, built on top of the vain-engine library.
 *
 * @author Mediocre
-* @date 20th/July/2022
 */
 
 #if __cplusplus < 201103L
@@ -58,10 +57,6 @@
 
 
 
-/*
-* A wrapper over winapi
-* window control system
-*/
 struct WinApi {
     static void videoMode(const std::string& title, const Dimension& dimension, Color color = eng::Color.BLACK_BLACK) {
         SetConsoleTitle(title.c_str());
@@ -105,17 +100,7 @@ struct WinApi {
 };
 
 
-/*
-* /////////////////////////////////////
-* 
-* [MenuItem] is an ADT class
-* to construct menu options.
-* And this class only serves
-* purpose to populate vectors for 
-* rendering the menu option items.
-* 
-* /////////////////////////////////////
-*/
+
 class MenuItem {
 public:
 
@@ -164,17 +149,6 @@ int MenuItem::count_ = 0;
 
 
 
-/*
-* //////////////////////////////////////////////////
-*
-* [Entity] is an abstract and the heart of
-* of all classes to construct the concrete widget 
-* classes. And many other future implmentations
-* of widgets will be inheriting from this
-* Entity class.
-* 
-* /////////////////////////////////////////////////
-*/
 template <class T_Entity>
 class Entity {
 public:
@@ -219,15 +193,6 @@ private:
 
 
 
-
-/*
-* //////////////////////////////////////////////////////
-*
-* Menu is an abstract and core implementation to render
-* menus from handling the graphics data to input events. 
-*
-* //////////////////////////////////////////////////////
-*/
 class Menu : public Entity<Menu> {
 public:
 
@@ -403,15 +368,6 @@ private:
 
 
 
-
-/*
-* //////////////////////////////////////////////////////
-*
-* HorizontalMenu is a concrete specialized class to render
-* menus horizontally on x-plane.
-*
-* //////////////////////////////////////////////////////
-*/
 class HorizontalMenu : public Menu {
 
 public:
@@ -451,15 +407,6 @@ public:
 
 
 
-
-/*
-* //////////////////////////////////////////////////////
-*
-* VerticalMenu is a concrete specialized class to render
-* menus vertically on y-plane.
-*
-* //////////////////////////////////////////////////////
-*/
 class VerticalMenu : public Menu {
 
 public:
@@ -499,18 +446,6 @@ public:
 
 
 private:
-    
-    // returns [MenuItem] string width size to 
-    // increment the positional coordinates on x-plane...
-    //
-    // EXAMPLE: " Option " Item class object....
-    //
-    // The above item width is 6 char long without whitespaces.
-    // We are calculating the item width 
-    // to position the next item on x-axis to avoid 
-    // the overlapping of multiple rendered objects....
-    // InshAllah i'll try to implement [MenuItem] string padding 
-    // to equalize the object placement....
     int getMenuItemWidthSize() {
         MenuItem& item = getVectorOfMenuItems().at(0);
         return item.getData().length() + 1;
@@ -712,6 +647,7 @@ private:
     eng::Box frontFrameBox_;
     eng::Box backFrameBox_;
 };
+
 
 
 class Text : public Entity<Text> {
