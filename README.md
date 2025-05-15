@@ -1,6 +1,6 @@
 # Menus
 > Menus is a Borland-inspired ascii console graphics library that is built on a custom multimedia (DLL) dynamic link library **vain engine**
-> to create basic GUI elements.
+> to create basic TUI elements.
 
 # #Getting Started
 > For a new project, Add the `libVain Engine.a` library to the linker and copy the `Vain-Engine.dll` file from the lib folder to the main directory where 
